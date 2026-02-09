@@ -1,0 +1,46 @@
+<Project>
+  <PropertyGroup>
+    <!-- Common properties for all projects -->
+    <LangVersion>12.0</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningsAsErrors>CS8600;CS8602;CS8603;CS8604;CS8618;CS8625</WarningsAsErrors>
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+    
+    <!-- Assembly information -->
+    <Company>Maken Platform</Company>
+    <Product>Maken Educational Platform</Product>
+    <Copyright>Copyright © 2026 Maken Platform</Copyright>
+    <Authors>Maken Development Team</Authors>
+    
+    <!-- Version information -->
+    <VersionPrefix>1.0.0</VersionPrefix>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+    
+    <!-- Build configuration -->
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <AnalysisLevel>latest</AnalysisLevel>
+  </PropertyGroup>
+
+  <!-- Source project specific settings -->
+  <PropertyGroup Condition="'$(MSBuildProjectName)' != 'Maken.Domain.Tests' and 
+                            '$(MSBuildProjectName)' != 'Maken.Application.Tests' and 
+                            '$(MSBuildProjectName)' != 'Maken.Infrastructure.Tests' and 
+                            '$(MSBuildProjectName)' != 'Maken.Api.Tests'">
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <!-- Test project specific settings -->
+  <PropertyGroup Condition="'$(MSBuildProjectName)' == 'Maken.Domain.Tests' or 
+                            '$(MSBuildProjectName)' == 'Maken.Application.Tests' or 
+                            '$(MSBuildProjectName)' == 'Maken.Infrastructure.Tests' or 
+                            '$(MSBuildProjectName)' == 'Maken.Api.Tests'">
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+  </PropertyGroup>
+</Project>

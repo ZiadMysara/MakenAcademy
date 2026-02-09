@@ -1,0 +1,14 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Maken.Api/Maken.Api.csproj" />
+    <Project Path="src/Maken.Application/Maken.Application.csproj" />
+    <Project Path="src/Maken.Domain/Maken.Domain.csproj" />
+    <Project Path="src/Maken.Infrastructure/Maken.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Maken.Api.Tests/Maken.Api.Tests.csproj" />
+    <Project Path="tests/Maken.Application.Tests/Maken.Application.Tests.csproj" />
+    <Project Path="tests/Maken.Domain.Tests/Maken.Domain.Tests.csproj" />
+    <Project Path="tests/Maken.Infrastructure.Tests/Maken.Infrastructure.Tests.csproj" />
+  </Folder>
+</Solution>

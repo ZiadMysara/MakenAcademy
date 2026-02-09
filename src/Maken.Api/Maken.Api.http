@@ -1,0 +1,6 @@
+@Maken.Api_HostAddress = http://localhost:5292
+
+GET {{Maken.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
