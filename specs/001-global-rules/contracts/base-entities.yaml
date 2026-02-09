@@ -1,0 +1,287 @@
+openapi: 3.0.3
+info:
+  title: Maken Platform - Base Entities API
+  description: |
+    Foundation API schemas for the Maken educational platform.
+    This specification defines base entity structures and common patterns.
+    
+    **Multi-Tenant Note**: All endpoints (except health) require tenant context
+    resolved from subdomain (e.g., `academy.maken.app`).
+  version: 1.0.0
+  contact:
+    name: Maken Platform Team
+
+servers:
+  - url: https://{tenant}.maken.app/api/v1
+    description: Tenant-specific API endpoint
+    variables:
+      tenant:
+        default: demo
+        description: Tenant subdomain
+  - url: https://maken.app/api/v1
+    description: Platform Admin endpoint (no tenant scope)
+
+tags:
+  - name: Health
+    description: Health check endpoints
+  - name: Common
+    description: Common schema definitions
+
+paths:
+  /health:
+    get:
+      tags:
+        - Health
+      summary: Health check
+      description: Returns service health status. Does not require authentication.
+      operationId: getHealth
+      responses:
+        '200':
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+        '503':
+          description: Service is unhealthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+
+components:
+  schemas:
+    # Base response wrapper
+    ApiResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Whether the request was successful
+        data:
+          type: object
+          nullable: true
+          description: Response payload (null on error)
+        error:
+          $ref: '#/components/schemas/ApiError'
+      required:
+        - success
+
+    ApiError:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Machine-readable error code
+          example: "TENANT_NOT_FOUND"
+        message:
+          type: string
+          description: Human-readable error message
+          example: "The requested tenant does not exist"
+        details:
+          type: object
+          additionalProperties: true
+          description: Additional error context
+      required:
+        - code
+        - message
+
+    # Health check
+    HealthResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [healthy, degraded, unhealthy]
+        version:
+          type: string
+          example: "1.0.0"
+        timestamp:
+          type: string
+          format: date-time
+        checks:
+          type: array
+          items:
+            $ref: '#/components/schemas/HealthCheck'
+      required:
+        - status
+        - version
+        - timestamp
+
+    HealthCheck:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "database"
+        status:
+          type: string
+          enum: [healthy, degraded, unhealthy]
+        duration:
+          type: string
+          description: Time taken for check
+          example: "12ms"
+      required:
+        - name
+        - status
+
+    # Base Entity fields (included in all entities)
+    BaseEntityFields:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+          description: Unique identifier (UUID)
+        createdAt:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Creation timestamp (UTC)
+        updatedAt:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+          description: Last update timestamp (UTC)
+      required:
+        - id
+        - createdAt
+
+    # Tenant entity
+    Tenant:
+      allOf:
+        - $ref: '#/components/schemas/BaseEntityFields'
+        - type: object
+          properties:
+            name:
+              type: string
+              maxLength: 200
+              description: Display name of the institute
+              example: "Al-Azhar Academy"
+            subdomain:
+              type: string
+              maxLength: 50
+              pattern: '^[a-z0-9][a-z0-9-]*[a-z0-9]$'
+              description: URL subdomain (lowercase alphanumeric, hyphens allowed)
+              example: "azhar-academy"
+            logoUrl:
+              type: string
+              format: uri
+              maxLength: 500
+              nullable: true
+              description: Branding logo URL
+            primaryColor:
+              type: string
+              pattern: '^#[0-9A-Fa-f]{6}$'
+              nullable: true
+              description: Primary theme color (hex)
+              example: "#1E40AF"
+            secondaryColor:
+              type: string
+              pattern: '^#[0-9A-Fa-f]{6}$'
+              nullable: true
+              description: Secondary theme color (hex)
+              example: "#3B82F6"
+            isActive:
+              type: boolean
+              description: Whether tenant is active
+          required:
+            - name
+            - subdomain
+            - isActive
+
+    # User entity
+    User:
+      allOf:
+        - $ref: '#/components/schemas/BaseEntityFields'
+        - type: object
+          properties:
+            tenantId:
+              type: string
+              format: uuid
+              nullable: true
+              description: Tenant ID (null for PlatformAdmin)
+            email:
+              type: string
+              format: email
+              maxLength: 256
+              description: Login email address
+            firstName:
+              type: string
+              maxLength: 100
+              description: User's first name
+            lastName:
+              type: string
+              maxLength: 100
+              description: User's last name
+            role:
+              $ref: '#/components/schemas/RoleType'
+            isActive:
+              type: boolean
+              description: Whether user account is active
+            lastLoginAt:
+              type: string
+              format: date-time
+              nullable: true
+              readOnly: true
+              description: Last login timestamp
+          required:
+            - email
+            - firstName
+            - lastName
+            - role
+            - isActive
+
+    # Role enum
+    RoleType:
+      type: string
+      enum:
+        - PlatformAdmin
+        - CompanyAdmin
+        - Instructor
+        - Student
+      description: |
+        User role in the system:
+        - PlatformAdmin: Global admin (no tenant)
+        - CompanyAdmin: Tenant administrator
+        - Instructor: Creates and manages courses
+        - Student: Consumes courses
+
+    # Pagination
+    PaginationMeta:
+      type: object
+      properties:
+        page:
+          type: integer
+          minimum: 1
+          description: Current page number
+        pageSize:
+          type: integer
+          minimum: 1
+          maximum: 100
+          description: Items per page
+        totalItems:
+          type: integer
+          minimum: 0
+          description: Total number of items
+        totalPages:
+          type: integer
+          minimum: 0
+          description: Total number of pages
+      required:
+        - page
+        - pageSize
+        - totalItems
+        - totalPages
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token obtained from login endpoint
+
+security:
+  - bearerAuth: []
