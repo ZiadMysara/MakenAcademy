@@ -439,3 +439,41 @@ scripts/
 
 # Test markdown files
 test.md
+
+##############################################################################
+# Angular / Frontend (Node.js/TypeScript)
+##############################################################################
+
+# Dependencies
+frontend/node_modules/
+frontend/.pnp
+frontend/.pnp.js
+
+# Testing
+frontend/coverage/
+frontend/.nyc_output/
+
+# Production build
+frontend/dist/
+frontend/build/
+frontend/.angular/
+
+# Misc
+frontend/.DS_Store
+frontend/*.log
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+frontend/lerna-debug.log*
+
+# IDEs
+frontend/.vscode/
+frontend/.idea/
+
+# Environment
+frontend/.env
+frontend/.env.local
+frontend/.env.*.local
+
+# Angular cache
+frontend/.angular/cache/

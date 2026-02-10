@@ -1,0 +1,13 @@
+<app-state-container [loading]="loading" [error]="error" [empty]="isEmpty" (retry)="onRetry()">
+  <div class="lesson-list">
+    <div class="list-header">
+      <h1 class="list-title">Lesson Management</h1>
+      <button class="create-button" (click)="onCreateNew()">
+        <span class="button-icon">+</span>
+        <span class="button-text">Create Lesson</span>
+      </button>
+    </div>
+    <app-data-table [columns]="columns" [data]="lessons" [actions]="['edit','delete']" (actionClick)="onRowAction($event)"></app-data-table>
+  </div>
+  <app-confirm-dialog *ngIf="showDeleteDialog" [message]="'Are you sure you want to delete ' + lessonToDelete?.title + '?'" (confirm)="onConfirmDelete()" (cancel)="onCancelDelete()"></app-confirm-dialog>
+</app-state-container>

@@ -1,0 +1,87 @@
+<app-state-container
+  [loading]="loading"
+  [error]="error"
+  [empty]="isEmpty"
+  (retry)="onRetry()">
+  
+  <div class="exam-session" *ngIf="exam">
+    <!-- Header -->
+    <div class="exam-header">
+      <h1 class="exam-title">{{ exam.title }}</h1>
+      <p class="exam-description" *ngIf="exam.description">{{ exam.description }}</p>
+      
+      <!-- Exam Info -->
+      <div class="exam-info">
+        <div class="info-item" *ngIf="exam.questionCount">
+          <span class="info-label">Questions:</span>
+          <span class="info-value">{{ exam.questionCount }}</span>
+        </div>
+        <div class="info-item" *ngIf="exam.passingScore">
+          <span class="info-label">Passing Score:</span>
+          <span class="info-value">{{ exam.passingScore }}%</span>
+        </div>
+        <div class="info-item" *ngIf="exam.timeLimit">
+          <span class="info-label">Time Limit:</span>
+          <span class="info-value">{{ exam.timeLimit }} minutes</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Questions -->
+    <div class="questions-container">
+      <div 
+        class="question-card" 
+        *ngFor="let question of exam.questions; let i = index"
+        [attr.data-question-id]="question.id">
+        
+        <!-- Question Number & Text -->
+        <div class="question-header">
+          <span class="question-number">Question {{ i + 1 }}</span>
+        </div>
+        <p class="question-text">{{ question.text }}</p>
+
+        <!-- Choices -->
+        <div class="choices-container">
+          <label 
+            class="choice-label"
+            *ngFor="let choice of question.choices"
+            [class.selected]="isAnswerSelected(question.id, choice.id)">
+            <input 
+              type="radio"
+              [name]="'question-' + question.id"
+              [value]="choice.id"
+              [checked]="isAnswerSelected(question.id, choice.id)"
+              (change)="onAnswerSelect(question.id, choice.id)"
+              class="choice-input">
+            <span class="choice-text">{{ choice.text }}</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="exam-actions">
+      <button 
+        class="cancel-button" 
+        (click)="onCancel()"
+        [disabled]="submitting">
+        Cancel
+      </button>
+      
+      <button 
+        class="submit-button" 
+        (click)="onSubmit()"
+        [disabled]="!canSubmit() || submitting">
+        <span *ngIf="!submitting">Submit Exam</span>
+        <span *ngIf="submitting">Submitting...</span>
+      </button>
+    </div>
+
+    <!-- Progress Indicator -->
+    <div class="progress-indicator">
+      <span class="progress-text">
+        {{ selectedAnswers.size }} of {{ exam.questions?.length || 0 }} answered
+      </span>
+    </div>
+  </div>
+</app-state-container>

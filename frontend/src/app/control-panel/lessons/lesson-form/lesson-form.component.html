@@ -1,0 +1,29 @@
+<app-form-shell [title]="isEditMode?'Edit Lesson':'Create Lesson'" [submitting]="submitting" [errors]="backendErrors" (formSubmit)="onSubmit()" (formCancel)="onCancel()">
+  <div class="lesson-form">
+    <form (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="title" class="form-label">Title *</label>
+        <input type="text" id="title" name="title" [(ngModel)]="lesson.title" (ngModelChange)="onFieldChange()" class="form-input" required>
+      </div>
+      <div class="form-group">
+        <label for="description" class="form-label">Description</label>
+        <textarea id="description" name="description" [(ngModel)]="lesson.description" (ngModelChange)="onFieldChange()" class="form-textarea" rows="3"></textarea>
+      </div>
+      <div class="form-group">
+        <label for="contentType" class="form-label">Content Type *</label>
+        <select id="contentType" name="contentType" [(ngModel)]="lesson.contentType" (ngModelChange)="onFieldChange()" class="form-select" required>
+          <option value="video">Video</option>
+          <option value="pdf">PDF</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="contentUrl" class="form-label">Content URL *</label>
+        <input type="url" id="contentUrl" name="contentUrl" [(ngModel)]="lesson.contentUrl" (ngModelChange)="onFieldChange()" class="form-input" required>
+      </div>
+      <div class="form-group">
+        <label for="order" class="form-label">Order *</label>
+        <input type="number" id="order" name="order" [(ngModel)]="lesson.order" (ngModelChange)="onFieldChange()" class="form-input" required min="1">
+      </div>
+    </form>
+  </div>
+</app-form-shell>

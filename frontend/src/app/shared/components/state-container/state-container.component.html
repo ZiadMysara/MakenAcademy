@@ -1,0 +1,31 @@
+<!-- Loading State -->
+<div *ngIf="currentState === 'loading'" class="state-container state-loading">
+  <div class="state-content">
+    <div class="spinner"></div>
+    <p class="state-message">Loading...</p>
+  </div>
+</div>
+
+<!-- Error State -->
+<div *ngIf="currentState === 'error'" class="state-container state-error">
+  <div class="state-content">
+    <div class="error-icon">⚠️</div>
+    <p class="state-message">{{ error }}</p>
+    <button type="button" class="retry-button" (click)="onRetry()">
+      Retry
+    </button>
+  </div>
+</div>
+
+<!-- Empty State -->
+<div *ngIf="currentState === 'empty'" class="state-container state-empty">
+  <div class="state-content">
+    <div class="empty-icon">📭</div>
+    <p class="state-message">No data available</p>
+  </div>
+</div>
+
+<!-- Data State (project content) -->
+<div *ngIf="currentState === 'data'" class="state-container state-data">
+  <ng-content></ng-content>
+</div>

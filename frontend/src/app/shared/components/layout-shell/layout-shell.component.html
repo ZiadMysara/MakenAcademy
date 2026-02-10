@@ -1,0 +1,24 @@
+<div class="layout-container">
+  <!-- Header -->
+  <header class="header">
+    <button class="menu-toggle" (click)="toggleSidebar()" aria-label="Toggle menu">
+      <span class="menu-icon"></span>
+    </button>
+    <div class="header-content">
+      <h1 class="app-title">Maken</h1>
+    </div>
+  </header>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" [class.open]="isSidebarOpen">
+    <nav class="sidebar-nav">
+      <!-- Navigation content will be added by feature modules -->
+      <ng-content select="[sidebar]"></ng-content>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <router-outlet></router-outlet>
+  </main>
+</div>

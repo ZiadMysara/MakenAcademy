@@ -1,0 +1,27 @@
+<app-state-container
+  [loading]="loading"
+  [error]="error"
+  [empty]="isEmpty"
+  emptyMessage="No exams found. Create your first exam to get started."
+  (retry)="onRetry()">
+  
+  <div class="exam-list-header">
+    <h2>Exams</h2>
+    <button class="btn-primary" (click)="onCreateNew()">Create New Exam</button>
+  </div>
+
+  <app-data-table
+    [columns]="columns"
+    [data]="exams"
+    [actions]="['edit', 'delete']"
+    (actionClick)="onRowAction($event)">
+  </app-data-table>
+
+</app-state-container>
+
+<app-confirm-dialog
+  *ngIf="showDeleteDialog"
+  [message]="'Are you sure you want to delete this exam? This action cannot be undone.'"
+  (confirm)="onConfirmDelete()"
+  (cancel)="onCancelDelete()">
+</app-confirm-dialog>

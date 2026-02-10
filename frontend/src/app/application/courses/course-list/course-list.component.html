@@ -1,0 +1,55 @@
+<!-- State Container handles loading/error/empty/data states -->
+<app-state-container 
+  [loading]="loading" 
+  [error]="error" 
+  [empty]="isEmpty"
+  (retry)="onRetry()">
+  
+  <!-- Course Grid -->
+  <div class="course-grid">
+    <div 
+      *ngFor="let course of courses" 
+      class="course-card"
+      [class.course-locked]="course.isLocked"
+      (click)="onCourseClick(course)"
+      [attr.role]="course.isLocked ? 'article' : 'button'"
+      [attr.tabindex]="course.isLocked ? '-1' : '0'"
+      [attr.aria-label]="course.name + (course.isLocked ? ' (Locked)' : '')">
+      
+      <!-- Lock Indicator -->
+      <div class="course-status" *ngIf="course.isLocked">
+        <span class="lock-icon">🔒</span>
+        <span class="status-text">Locked</span>
+      </div>
+
+      <!-- Course Content -->
+      <div class="course-content">
+        <h3 class="course-title">{{ course.name }}</h3>
+        <p class="course-description">{{ course.description }}</p>
+
+        <!-- Course Meta -->
+        <div class="course-meta">
+          <span class="lesson-count" *ngIf="course.lessonCount">
+            📚 {{ course.lessonCount }} Lessons
+          </span>
+          
+          <!-- Progress Bar (only for unlocked courses with progress) -->
+          <div class="progress-container" *ngIf="!course.isLocked && course.progress !== undefined">
+            <div class="progress-bar">
+              <div 
+                class="progress-fill" 
+                [style.width.%]="getProgressPercentage(course)">
+              </div>
+            </div>
+            <span class="progress-text">{{ getProgressPercentage(course) }}% Complete</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Indicator -->
+      <div class="course-action" *ngIf="!course.isLocked">
+        <span class="action-icon">→</span>
+      </div>
+    </div>
+  </div>
+</app-state-container>

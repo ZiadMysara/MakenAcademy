@@ -1,0 +1,141 @@
+/* Layout Shell Styles - Mobile First */
+/* Constitution Rule: FE-033 (mobile-first responsive design) */
+
+/* Mobile styles (default - 320px+) */
+.layout-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: var(--color-background, #f9fafb);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  background-color: var(--color-primary, #1E40AF);
+  color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.menu-toggle {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 0.5rem;
+  margin-right: 1rem;
+}
+
+.menu-icon {
+  display: block;
+  width: 1.5rem;
+  height: 2px;
+  background-color: white;
+  position: relative;
+}
+
+.menu-icon::before,
+.menu-icon::after {
+  content: '';
+  display: block;
+  width: 1.5rem;
+  height: 2px;
+  background-color: white;
+  position: absolute;
+  left: 0;
+}
+
+.menu-icon::before {
+  top: -0.5rem;
+}
+
+.menu-icon::after {
+  bottom: -0.5rem;
+}
+
+.header-content {
+  flex: 1;
+}
+
+.app-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: -16rem;
+  width: 16rem;
+  height: 100vh;
+  background-color: white;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+  transition: left 0.3s ease;
+  z-index: 200;
+  overflow-y: auto;
+}
+
+.sidebar.open {
+  left: 0;
+}
+
+.sidebar-nav {
+  padding: 1rem;
+  margin-top: 4rem;
+}
+
+.main-content {
+  flex: 1;
+  padding: 1rem;
+}
+
+/* Tablet and larger screens (768px+) */
+@media (min-width: 768px) {
+  .layout-container {
+    flex-direction: row;
+  }
+
+  .header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+  }
+
+  .menu-toggle {
+    display: none;
+  }
+
+  .sidebar {
+    position: fixed;
+    left: 0;
+    top: 4rem;
+    height: calc(100vh - 4rem);
+    width: 16rem;
+  }
+
+  .main-content {
+    margin-left: 16rem;
+    margin-top: 4rem;
+    padding: 2rem;
+  }
+}
+
+/* Desktop and larger screens (1024px+) */
+@media (min-width: 1024px) {
+  .sidebar {
+    width: 18rem;
+  }
+
+  .main-content {
+    margin-left: 18rem;
+    padding: 2.5rem;
+    max-width: 1400px;
+  }
+}

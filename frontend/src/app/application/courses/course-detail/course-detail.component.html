@@ -1,0 +1,83 @@
+<!-- State Container handles loading/error/empty/data states -->
+<app-state-container 
+  [loading]="loading" 
+  [error]="error" 
+  [empty]="isEmpty"
+  (retry)="onRetry()">
+  
+  <div class="course-detail" *ngIf="course">
+    <!-- Header -->
+    <div class="course-header">
+      <button 
+        type="button" 
+        class="back-button" 
+        (click)="onBackClick()"
+        aria-label="Back to courses">
+        ← Back to Courses
+      </button>
+
+      <h1 class="course-name">{{ course.name }}</h1>
+      <p class="course-description">{{ course.description }}</p>
+
+      <!-- Progress Bar (if available) -->
+      <div class="progress-section" *ngIf="course.progress !== undefined">
+        <div class="progress-bar">
+          <div 
+            class="progress-fill" 
+            [style.width.%]="course.progress">
+          </div>
+        </div>
+        <span class="progress-text">{{ course.progress }}% Complete</span>
+      </div>
+    </div>
+
+    <!-- Lessons List -->
+    <div class="lessons-section">
+      <h2 class="section-title">Lessons</h2>
+
+      <div class="lessons-list">
+        <div 
+          *ngFor="let lesson of course.lessons" 
+          class="lesson-item"
+          [class.lesson-locked]="lesson.isLocked"
+          [class.lesson-completed]="lesson.isCompleted"
+          (click)="onLessonClick(lesson)"
+          [attr.role]="lesson.isLocked ? 'article' : 'button'"
+          [attr.tabindex]="lesson.isLocked ? '-1' : '0'"
+          [attr.aria-label]="lesson.title + ' - ' + getLessonStatus(lesson)">
+          
+          <!-- Lesson Icon/Status -->
+          <div class="lesson-icon">
+            <span class="icon">{{ getLessonIcon(lesson) }}</span>
+          </div>
+
+          <!-- Lesson Content -->
+          <div class="lesson-content">
+            <div class="lesson-header">
+              <span class="lesson-order">Lesson {{ lesson.order }}</span>
+              <span 
+                class="lesson-status"
+                [class.status-locked]="lesson.isLocked"
+                [class.status-completed]="lesson.isCompleted">
+                {{ getLessonStatus(lesson) }}
+              </span>
+            </div>
+            
+            <h3 class="lesson-title">{{ lesson.title }}</h3>
+            <p class="lesson-description">{{ lesson.description }}</p>
+
+            <!-- Lesson Meta -->
+            <div class="lesson-meta" *ngIf="lesson.duration">
+              <span class="duration">⏱️ {{ lesson.duration }}</span>
+            </div>
+          </div>
+
+          <!-- Action Indicator -->
+          <div class="lesson-action" *ngIf="!lesson.isLocked">
+            <span class="action-icon">→</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</app-state-container>

@@ -1,0 +1,82 @@
+<app-state-container
+  [loading]="loading"
+  [error]="error"
+  [empty]="isEmpty"
+  (retry)="onRetry()">
+  
+  <div class="lesson-viewer" *ngIf="lesson">
+    <!-- Header -->
+    <div class="lesson-header">
+      <button class="back-button" (click)="onBackClick()" aria-label="Back to course">
+        ← Back to Course
+      </button>
+      <h1 class="lesson-title">{{ lesson.title }}</h1>
+      <p class="lesson-description" *ngIf="lesson.description">{{ lesson.description }}</p>
+      
+      <!-- Completion Badge -->
+      <div class="completion-badge" *ngIf="isCompleted">
+        <span class="badge-icon">✓</span>
+        <span class="badge-text">Completed</span>
+      </div>
+    </div>
+
+    <!-- Locked State -->
+    <div class="locked-state" *ngIf="isLocked">
+      <div class="locked-icon">🔒</div>
+      <h2>This lesson is locked</h2>
+      <p>Complete previous lessons to unlock this content.</p>
+    </div>
+
+    <!-- Content Area -->
+    <div class="content-area" *ngIf="!isLocked">
+      <!-- Video Content -->
+      <div class="video-container" *ngIf="isVideo">
+        <video 
+          controls 
+          class="video-player"
+          [src]="lesson.contentUrl"
+          [poster]="lesson.thumbnailUrl">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+
+      <!-- PDF Content -->
+      <div class="pdf-container" *ngIf="isPdf">
+        <iframe 
+          class="pdf-viewer"
+          [src]="getSafeUrl(lesson.contentUrl)"
+          title="Lesson PDF Content">
+        </iframe>
+      </div>
+
+      <!-- Unknown Content Type -->
+      <div class="unknown-content" *ngIf="!isVideo && !isPdf">
+        <p>Content type not supported: {{ lesson.contentType }}</p>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="lesson-actions" *ngIf="!isLocked">
+      <!-- Exam Button -->
+      <button 
+        class="exam-button" 
+        *ngIf="hasExam"
+        (click)="onStartExam()">
+        <span class="button-icon">📝</span>
+        <span class="button-text">Take Exam</span>
+      </button>
+
+      <!-- Lesson Info -->
+      <div class="lesson-info">
+        <div class="info-item" *ngIf="lesson.duration">
+          <span class="info-label">Duration:</span>
+          <span class="info-value">{{ lesson.duration }}</span>
+        </div>
+        <div class="info-item" *ngIf="lesson.order">
+          <span class="info-label">Lesson:</span>
+          <span class="info-value">#{{ lesson.order }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</app-state-container>

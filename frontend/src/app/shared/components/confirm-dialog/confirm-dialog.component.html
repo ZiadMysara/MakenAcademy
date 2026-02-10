@@ -1,0 +1,45 @@
+<!-- Modal Backdrop -->
+<div 
+  class="dialog-backdrop" 
+  (click)="onBackdropClick($event)"
+  (keydown)="onKeyDown($event)"
+  tabindex="-1"
+  role="dialog"
+  aria-modal="true"
+  [attr.aria-labelledby]="'dialog-title'">
+  
+  <!-- Dialog Container -->
+  <div class="dialog-container" role="document">
+    <!-- Dialog Header -->
+    <div class="dialog-header">
+      <h3 id="dialog-title" class="dialog-title">{{ title }}</h3>
+    </div>
+
+    <!-- Dialog Body -->
+    <div class="dialog-body">
+      <p class="dialog-message">{{ message }}</p>
+    </div>
+
+    <!-- Dialog Footer -->
+    <div class="dialog-footer">
+      <button 
+        type="button"
+        class="btn btn-cancel"
+        (click)="onCancel()"
+        aria-label="Cancel action">
+        {{ cancelLabel }}
+      </button>
+      
+      <button 
+        type="button"
+        class="btn btn-confirm"
+        [class.btn-danger]="variant === 'danger'"
+        [class.btn-primary]="variant === 'primary'"
+        [class.btn-warning]="variant === 'warning'"
+        (click)="onConfirm()"
+        aria-label="Confirm action">
+        {{ confirmLabel }}
+      </button>
+    </div>
+  </div>
+</div>

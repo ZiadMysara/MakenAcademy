@@ -1,0 +1,51 @@
+<app-form-shell
+  [title]="isEditMode ? 'Edit Course' : 'Create Course'"
+  [submitting]="submitting"
+  [errors]="backendErrors"
+  (formSubmit)="onSubmit()"
+  (formCancel)="onCancel()">
+  
+  <div class="course-form">
+    <form (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="name" class="form-label">Course Name *</label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          [(ngModel)]="course.name"
+          (ngModelChange)="onFieldChange()"
+          class="form-input"
+          required
+          placeholder="Enter course name">
+      </div>
+
+      <div class="form-group">
+        <label for="description" class="form-label">Description</label>
+        <textarea
+          id="description"
+          name="description"
+          [(ngModel)]="course.description"
+          (ngModelChange)="onFieldChange()"
+          class="form-textarea"
+          rows="4"
+          placeholder="Enter course description"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="status" class="form-label">Status *</label>
+        <select
+          id="status"
+          name="status"
+          [(ngModel)]="course.status"
+          (ngModelChange)="onFieldChange()"
+          class="form-select"
+          required>
+          <option value="draft">Draft</option>
+          <option value="published">Published</option>
+          <option value="archived">Archived</option>
+        </select>
+      </div>
+    </form>
+  </div>
+</app-form-shell>

@@ -1,0 +1,137 @@
+/**
+ * StateContainerComponent Styles
+ * 
+ * Mobile-first responsive design (Constitution §12.I)
+ * Breakpoints: 320px (mobile) → 768px (tablet) → 1024px+ (desktop)
+ */
+
+/* Base container */
+.state-container {
+  width: 100%;
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+/* State content wrapper */
+.state-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+}
+
+/* Loading spinner */
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-top-color: #3498db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Icons */
+.error-icon,
+.empty-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+/* State messages */
+.state-message {
+  font-size: 1rem;
+  color: #333;
+  margin: 0 0 1rem 0;
+  line-height: 1.5;
+}
+
+.state-error .state-message {
+  color: #e74c3c;
+}
+
+.state-empty .state-message {
+  color: #7f8c8d;
+}
+
+/* Retry button */
+.retry-button {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  color: #fff;
+  background-color: #3498db;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  min-width: 120px;
+}
+
+.retry-button:hover {
+  background-color: #2980b9;
+}
+
+.retry-button:active {
+  background-color: #21618c;
+}
+
+.retry-button:focus {
+  outline: 2px solid #3498db;
+  outline-offset: 2px;
+}
+
+/* Data state - no special styling, just project content */
+.state-data {
+  min-height: auto;
+  padding: 0;
+}
+
+/* Tablet (768px+) */
+@media (min-width: 768px) {
+  .state-container {
+    min-height: 300px;
+    padding: 2rem;
+  }
+
+  .spinner {
+    width: 50px;
+    height: 50px;
+  }
+
+  .error-icon,
+  .empty-icon {
+    font-size: 4rem;
+  }
+
+  .state-message {
+    font-size: 1.125rem;
+  }
+
+  .retry-button {
+    padding: 0.875rem 2rem;
+    font-size: 1.125rem;
+  }
+}
+
+/* Desktop (1024px+) */
+@media (min-width: 1024px) {
+  .state-container {
+    min-height: 400px;
+  }
+
+  .state-content {
+    max-width: 500px;
+  }
+}

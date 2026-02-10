@@ -1,0 +1,207 @@
+/* Mobile-first CSS for AnalyticsDashboardComponent */
+
+.analytics-dashboard {
+  padding: 1rem;
+}
+
+.dashboard-title {
+  margin: 0 0 1.5rem 0;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+/* Stats Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  background: #f9f9f9;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.stat-value {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #007bff;
+  margin-bottom: 0.5rem;
+}
+
+.stat-label {
+  font-size: 0.9rem;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Course Statistics */
+.course-stats {
+  margin-top: 2rem;
+}
+
+.section-title {
+  margin: 0 0 1.5rem 0;
+  font-size: 1.25rem;
+  color: #333;
+  border-bottom: 2px solid #e0e0e0;
+  padding-bottom: 0.5rem;
+}
+
+.chart-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.chart-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.chart-label {
+  font-weight: 500;
+  color: #333;
+  font-size: 0.95rem;
+}
+
+.chart-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.bar-group {
+  position: relative;
+  height: 32px;
+  background: #f0f0f0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.bar {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 0.5rem;
+  transition: width 0.3s ease;
+  min-width: 40px;
+}
+
+.enrollment-bar {
+  background: linear-gradient(90deg, #007bff, #0056b3);
+}
+
+.completion-bar {
+  background: linear-gradient(90deg, #28a745, #1e7e34);
+}
+
+.bar-value {
+  color: white;
+  font-weight: 500;
+  font-size: 0.85rem;
+}
+
+.chart-legend {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.legend-color {
+  width: 16px;
+  height: 16px;
+  border-radius: 2px;
+}
+
+.enrollment-color {
+  background: #007bff;
+}
+
+.completion-color {
+  background: #28a745;
+}
+
+/* Empty State */
+.empty-course-stats {
+  padding: 2rem;
+  text-align: center;
+  color: #666;
+  background: #f9f9f9;
+  border: 1px dashed #ddd;
+  border-radius: 8px;
+}
+
+/* Tablet (768px+) */
+@media (min-width: 768px) {
+  .analytics-dashboard {
+    padding: 1.5rem;
+  }
+
+  .dashboard-title {
+    font-size: 1.75rem;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .chart-row {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .chart-label {
+    flex: 0 0 200px;
+  }
+
+  .chart-bars {
+    flex: 1;
+  }
+
+  .chart-legend {
+    flex: 0 0 200px;
+    justify-content: flex-end;
+  }
+}
+
+/* Desktop (1024px+) */
+@media (min-width: 1024px) {
+  .analytics-dashboard {
+    padding: 2rem;
+    max-width: 1200px;
+  }
+
+  .dashboard-title {
+    font-size: 2rem;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+  }
+}
+
+/* Large Desktop (1440px+) */
+@media (min-width: 1440px) {
+  .stats-grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}

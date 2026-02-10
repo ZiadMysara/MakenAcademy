@@ -1,0 +1,54 @@
+<!-- Form Container -->
+<div class="form-shell">
+  <!-- Form Header -->
+  <div class="form-header" *ngIf="title">
+    <h2 class="form-title">{{ title }}</h2>
+  </div>
+
+  <!-- Success Message -->
+  <div class="alert alert-success" *ngIf="successMessage">
+    <span class="alert-icon">✓</span>
+    <span class="alert-message">{{ successMessage }}</span>
+  </div>
+
+  <!-- Error Messages -->
+  <div class="alert alert-error" *ngIf="hasErrors">
+    <span class="alert-icon">⚠️</span>
+    <div class="alert-content">
+      <p class="alert-title">Please correct the following errors:</p>
+      <ul class="error-list">
+        <li *ngFor="let error of errorMessages">{{ error }}</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Form Content (projected) -->
+  <div class="form-content">
+    <ng-content></ng-content>
+  </div>
+
+  <!-- Form Actions -->
+  <div class="form-actions">
+    <button 
+      type="button"
+      class="btn btn-cancel"
+      *ngIf="showCancel"
+      [disabled]="submitting"
+      (click)="onCancel()">
+      {{ cancelLabel }}
+    </button>
+    
+    <button 
+      type="submit"
+      class="btn btn-submit"
+      [disabled]="submitting"
+      [class.btn-submitting]="submitting"
+      (click)="onSubmit()">
+      <span *ngIf="!submitting">{{ submitLabel }}</span>
+      <span *ngIf="submitting" class="submitting-content">
+        <span class="spinner-small"></span>
+        <span>Submitting...</span>
+      </span>
+    </button>
+  </div>
+</div>

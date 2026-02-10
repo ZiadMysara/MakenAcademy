@@ -1,0 +1,77 @@
+<app-state-container
+  [loading]="loading"
+  [error]="error"
+  [empty]="isEmpty"
+  (retry)="onRetry()">
+  
+  <div class="analytics-dashboard" *ngIf="analytics">
+    <h1 class="dashboard-title">Analytics Dashboard</h1>
+
+    <!-- Summary Stats -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-value">{{ analytics.enrollmentCount }}</div>
+        <div class="stat-label">Total Enrollments</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-value">{{ analytics.completionRate }}%</div>
+        <div class="stat-label">Completion Rate</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-value">{{ analytics.examPassRate }}%</div>
+        <div class="stat-label">Exam Pass Rate</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-value">{{ analytics.activeCourses }}</div>
+        <div class="stat-label">Active Courses</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-value">{{ analytics.activeStudents }}</div>
+        <div class="stat-label">Active Students</div>
+      </div>
+    </div>
+
+    <!-- Course Statistics -->
+    <div class="course-stats" *ngIf="analytics.courseStats && analytics.courseStats.length > 0">
+      <h2 class="section-title">Course Enrollment & Completion</h2>
+      
+      <div class="chart-container">
+        <div class="chart-row" *ngFor="let course of analytics.courseStats">
+          <div class="chart-label">{{ course.courseName }}</div>
+          <div class="chart-bars">
+            <div class="bar-group">
+              <div class="bar enrollment-bar" [style.width]="getBarWidth(course.enrollments)">
+                <span class="bar-value">{{ course.enrollments }}</span>
+              </div>
+            </div>
+            <div class="bar-group">
+              <div class="bar completion-bar" [style.width]="getBarWidth(course.completions)">
+                <span class="bar-value">{{ course.completions }}</span>
+              </div>
+            </div>
+          </div>
+          <div class="chart-legend">
+            <span class="legend-item">
+              <span class="legend-color enrollment-color"></span>
+              Enrollments
+            </span>
+            <span class="legend-item">
+              <span class="legend-color completion-color"></span>
+              Completions
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Empty State for Course Stats -->
+    <div class="empty-course-stats" *ngIf="!analytics.courseStats || analytics.courseStats.length === 0">
+      <p>No course statistics available yet.</p>
+    </div>
+  </div>
+
+</app-state-container>

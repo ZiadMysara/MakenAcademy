@@ -1,0 +1,45 @@
+<!-- Empty State -->
+<div *ngIf="isEmpty" class="table-empty">
+  <div class="empty-icon">📋</div>
+  <p class="empty-message">No data to display</p>
+</div>
+
+<!-- Table (Desktop View) -->
+<div *ngIf="!isEmpty" class="table-container">
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th 
+          *ngFor="let column of columns" 
+          [style.width]="column.width"
+          [style.text-align]="column.align || 'left'">
+          {{ column.label }}
+        </th>
+        <th *ngIf="actions.length > 0" class="actions-column">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let row of data">
+        <td 
+          *ngFor="let column of columns"
+          [style.text-align]="column.align || 'left'"
+          [attr.data-label]="column.label">
+          {{ getCellValue(row, column.key) }}
+        </td>
+        <td *ngIf="actions.length > 0" class="actions-cell" data-label="Actions">
+          <div class="action-buttons">
+            <button 
+              *ngFor="let action of actions"
+              type="button"
+              class="action-button action-{{ action }}"
+              (click)="onActionClick(action, row)"
+              [attr.aria-label]="getActionLabel(action)">
+              <span class="action-icon">{{ getActionIcon(action) }}</span>
+              <span class="action-label">{{ getActionLabel(action) }}</span>
+            </button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

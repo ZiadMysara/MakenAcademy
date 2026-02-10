@@ -1,0 +1,252 @@
+/**
+ * CourseListComponent Styles
+ * 
+ * Mobile-first responsive card grid (Constitution §12.I)
+ * Breakpoints: 320px (mobile) → 768px (tablet) → 1024px+ (desktop)
+ */
+
+/* Course Grid - Mobile First (single column) */
+.course-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  padding: 1rem;
+  width: 100%;
+}
+
+/* Course Card */
+.course-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1.5rem;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  min-height: 180px;
+}
+
+.course-card:hover:not(.course-locked) {
+  border-color: #3498db;
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.15);
+  transform: translateY(-2px);
+}
+
+.course-card:focus {
+  outline: 2px solid #3498db;
+  outline-offset: 2px;
+}
+
+/* Locked Course State */
+.course-locked {
+  opacity: 0.7;
+  cursor: not-allowed;
+  background-color: #f8f9fa;
+}
+
+.course-locked:hover {
+  transform: none;
+  box-shadow: none;
+  border-color: #e0e0e0;
+}
+
+/* Course Status (Lock Indicator) */
+.course-status {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background-color: #f39c12;
+  color: #fff;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.lock-icon {
+  font-size: 1rem;
+}
+
+.status-text {
+  display: none; /* Hide text on mobile */
+}
+
+/* Course Content */
+.course-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.course-title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #333;
+  line-height: 1.4;
+  padding-right: 4rem; /* Space for lock indicator */
+}
+
+.course-description {
+  margin: 0;
+  font-size: 0.9375rem;
+  color: #666;
+  line-height: 1.6;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Course Meta */
+.course-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: auto;
+}
+
+.lesson-count {
+  font-size: 0.875rem;
+  color: #7f8c8d;
+}
+
+/* Progress Container */
+.progress-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 6px;
+  background-color: #e0e0e0;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background-color: #2ecc71;
+  transition: width 0.3s ease;
+}
+
+.progress-text {
+  font-size: 0.75rem;
+  color: #7f8c8d;
+}
+
+/* Course Action Indicator */
+.course-action {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background-color: #3498db;
+  color: #fff;
+  border-radius: 50%;
+  font-size: 1.25rem;
+  transition: background-color 0.2s ease;
+}
+
+.course-card:hover:not(.course-locked) .course-action {
+  background-color: #2980b9;
+}
+
+.action-icon {
+  display: block;
+  line-height: 1;
+}
+
+/* Tablet (768px+): 2 columns */
+@media (min-width: 768px) {
+  .course-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    padding: 1.5rem;
+  }
+
+  .course-card {
+    padding: 2rem;
+    min-height: 220px;
+  }
+
+  .course-title {
+    font-size: 1.5rem;
+  }
+
+  .course-description {
+    font-size: 1rem;
+  }
+
+  .status-text {
+    display: inline; /* Show text on tablet+ */
+  }
+
+  .progress-bar {
+    height: 8px;
+  }
+
+  .progress-text {
+    font-size: 0.875rem;
+  }
+}
+
+/* Desktop (1024px+): 3 columns */
+@media (min-width: 1024px) {
+  .course-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    padding: 2rem;
+  }
+
+  .course-card {
+    min-height: 240px;
+  }
+
+  .course-title {
+    font-size: 1.625rem;
+  }
+}
+
+/* Large Desktop (1440px+): 4 columns */
+@media (min-width: 1440px) {
+  .course-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Accessibility: Reduce motion */
+@media (prefers-reduced-motion: reduce) {
+  .course-card,
+  .progress-fill,
+  .course-action {
+    transition: none;
+  }
+
+  .course-card:hover:not(.course-locked) {
+    transform: none;
+  }
+}
+
+/* Print styles */
+@media print {
+  .course-action {
+    display: none;
+  }
+
+  .course-card {
+    break-inside: avoid;
+  }
+}

@@ -1,0 +1,79 @@
+<app-state-container
+  [loading]="false"
+  [error]="error"
+  [empty]="isEmpty"
+  (retry)="onBackToLesson()">
+  
+  <div class="exam-result" *ngIf="result">
+    <!-- Pass Result -->
+    <div class="result-container pass" *ngIf="isPassed">
+      <div class="result-icon">✓</div>
+      <h1 class="result-title">Congratulations!</h1>
+      <p class="result-message">You passed the exam</p>
+      
+      <!-- Result Details -->
+      <div class="result-details">
+        <div class="detail-item" *ngIf="result.score !== undefined">
+          <span class="detail-label">Your Score:</span>
+          <span class="detail-value">{{ result.score }}%</span>
+        </div>
+        <div class="detail-item" *ngIf="result.passingScore !== undefined">
+          <span class="detail-label">Passing Score:</span>
+          <span class="detail-value">{{ result.passingScore }}%</span>
+        </div>
+        <div class="detail-item" *ngIf="result.correctAnswers !== undefined && result.totalQuestions !== undefined">
+          <span class="detail-label">Correct Answers:</span>
+          <span class="detail-value">{{ result.correctAnswers }} / {{ result.totalQuestions }}</span>
+        </div>
+      </div>
+
+      <!-- Pass Actions -->
+      <div class="result-actions">
+        <button class="primary-button" (click)="onBackToLesson()">
+          Continue to Next Lesson
+        </button>
+        <button class="secondary-button" (click)="onBackToCourse()">
+          Back to Course
+        </button>
+      </div>
+    </div>
+
+    <!-- Fail Result -->
+    <div class="result-container fail" *ngIf="isFailed">
+      <div class="result-icon">✗</div>
+      <h1 class="result-title">Not Quite There</h1>
+      <p class="result-message">You did not pass the exam</p>
+      
+      <!-- Result Details -->
+      <div class="result-details">
+        <div class="detail-item" *ngIf="result.score !== undefined">
+          <span class="detail-label">Your Score:</span>
+          <span class="detail-value">{{ result.score }}%</span>
+        </div>
+        <div class="detail-item" *ngIf="result.passingScore !== undefined">
+          <span class="detail-label">Passing Score:</span>
+          <span class="detail-value">{{ result.passingScore }}%</span>
+        </div>
+        <div class="detail-item" *ngIf="result.correctAnswers !== undefined && result.totalQuestions !== undefined">
+          <span class="detail-label">Correct Answers:</span>
+          <span class="detail-value">{{ result.correctAnswers }} / {{ result.totalQuestions }}</span>
+        </div>
+      </div>
+
+      <!-- Feedback -->
+      <div class="feedback-message" *ngIf="result.feedback">
+        <p>{{ result.feedback }}</p>
+      </div>
+
+      <!-- Fail Actions -->
+      <div class="result-actions">
+        <button class="primary-button" (click)="onRetry()">
+          Retry Exam
+        </button>
+        <button class="secondary-button" (click)="onBackToLesson()">
+          Review Lesson
+        </button>
+      </div>
+    </div>
+  </div>
+</app-state-container>

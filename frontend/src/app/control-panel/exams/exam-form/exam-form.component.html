@@ -1,0 +1,124 @@
+<app-form-shell
+  [title]="isEditMode ? 'Edit Exam' : 'Create New Exam'"
+  [submitting]="submitting"
+  [errors]="backendErrors"
+  [submitLabel]="isEditMode ? 'Update' : 'Create'"
+  (formSubmit)="onSubmit()"
+  (formCancel)="onCancel()">
+  
+  <form class="exam-form">
+    <!-- Basic Info -->
+    <div class="form-section">
+      <h3>Basic Information</h3>
+      
+      <div class="form-group">
+        <label for="title">Exam Title *</label>
+        <input
+          type="text"
+          id="title"
+          [(ngModel)]="exam.title"
+          name="title"
+          (ngModelChange)="onFieldChange()"
+          required
+          placeholder="Enter exam title">
+      </div>
+
+      <div class="form-group">
+        <label for="passThreshold">Pass Threshold (%) *</label>
+        <input
+          type="number"
+          id="passThreshold"
+          [(ngModel)]="exam.passThreshold"
+          name="passThreshold"
+          (ngModelChange)="onFieldChange()"
+          min="0"
+          max="100"
+          required
+          placeholder="70">
+      </div>
+    </div>
+
+    <!-- Questions -->
+    <div class="form-section">
+      <div class="section-header">
+        <h3>Questions</h3>
+        <button type="button" class="btn-secondary" (click)="addQuestion()">
+          Add Question
+        </button>
+      </div>
+
+      <div class="questions-list">
+        <div *ngFor="let question of exam.questions; let qIndex = index; trackBy: trackByIndex" 
+             class="question-card">
+          
+          <div class="question-header">
+            <h4>Question {{ qIndex + 1 }}</h4>
+            <button 
+              type="button" 
+              class="btn-danger-small" 
+              (click)="removeQuestion(qIndex)"
+              [disabled]="exam.questions.length === 1">
+              Remove
+            </button>
+          </div>
+
+          <div class="form-group">
+            <label [for]="'question-text-' + qIndex">Question Text *</label>
+            <textarea
+              [id]="'question-text-' + qIndex"
+              [(ngModel)]="question.text"
+              [name]="'question-text-' + qIndex"
+              (ngModelChange)="onFieldChange()"
+              rows="3"
+              required
+              placeholder="Enter question text"></textarea>
+          </div>
+
+          <div class="choices-section">
+            <label>Choices *</label>
+            
+            <div *ngFor="let choice of question.choices; let cIndex = index; trackBy: trackByIndex" 
+                 class="choice-row">
+              
+              <input
+                type="radio"
+                [id]="'correct-' + qIndex + '-' + cIndex"
+                [name]="'correct-' + qIndex"
+                [value]="cIndex"
+                [(ngModel)]="question.correctChoiceIndex"
+                (ngModelChange)="onFieldChange()"
+                title="Mark as correct answer">
+              
+              <input
+                type="text"
+                [id]="'choice-' + qIndex + '-' + cIndex"
+                [(ngModel)]="question.choices[cIndex]"
+                [name]="'choice-' + qIndex + '-' + cIndex"
+                (ngModelChange)="onFieldChange()"
+                class="choice-input"
+                required
+                placeholder="Choice {{ cIndex + 1 }}">
+              
+              <button 
+                type="button" 
+                class="btn-danger-small" 
+                (click)="removeChoice(qIndex, cIndex)"
+                [disabled]="question.choices.length <= 2"
+                title="Remove choice">
+                ×
+              </button>
+            </div>
+
+            <button 
+              type="button" 
+              class="btn-secondary-small" 
+              (click)="addChoice(qIndex)">
+              Add Choice
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+
+</app-form-shell>
