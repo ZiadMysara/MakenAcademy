@@ -190,7 +190,7 @@
 - [ ] T085 [P] Add error logging for contact form submissions
 - [ ] T086 [P] Add analytics tracking for landing page visits (if analytics service exists)
 - [x] T087 [P] Update README.md with landing page feature documentation
-- [ ] T088 [P] Add API documentation comments to PublicController and ContactInquiriesController
+- [x] T088 [P] Add API documentation comments to PublicController and ContactInquiriesController
 - [ ] T089 Verify all endpoints match contracts/openapi.yaml specification
 - [ ] T090 Run manual testing checklist from quickstart.md
 - [ ] T091 Test responsive design on mobile (320px), tablet (768px), desktop (1024px+)
@@ -198,8 +198,8 @@
 - [ ] T093 Test with zero organizations in database (verify "no organizations" message)
 - [ ] T094 Test contact form validation and error handling
 - [ ] T095 Test admin dashboard filtering and pagination
-- [ ] T096 Code cleanup and refactoring
-- [ ] T097 Commit all changes and create pull request
+- [x] T096 Code cleanup and refactoring
+- [-] T097 Commit all changes and create pull request
 
 ---
 
