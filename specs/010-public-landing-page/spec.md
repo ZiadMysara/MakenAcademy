@@ -5,6 +5,12 @@
 **Status**: Draft  
 **Input**: User description: "Create a public landing page that serves as the entry point for the Maken platform, showcasing available organizations and providing contact options for new brands"
 
+## Clarifications
+
+### Session 2025-02-11
+
+- Q: How should contact form submissions be delivered to the admin team? → A: Store in database only - Admin checks a dashboard for new inquiries (Note: Email notifications planned for future enhancement)
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Platform Discovery (Priority: P1) 🎯 MVP
@@ -53,8 +59,8 @@ An organization representative wants to create their own branded learning platfo
 
 1. **Given** a visitor is on the landing page, **When** they click "Contact Us" or "Create Your Brand", **Then** a contact form modal appears or they are directed to a contact page
 2. **Given** the contact form is displayed, **When** the visitor fills in their name, email, organization name, and message, **Then** the form validates the input
-3. **Given** the contact form is completed with valid data, **When** the visitor submits it, **Then** the message is sent to the Maken admin team and the visitor sees a success confirmation
-4. **Given** the contact form submission fails, **When** an error occurs, **Then** the visitor sees a clear error message and can retry or use an alternative contact method (email address displayed)
+3. **Given** the contact form is completed with valid data, **When** the visitor submits it, **Then** the inquiry is stored in the database and the visitor sees a success confirmation message
+4. **Given** the contact form submission fails, **When** an error occurs, **Then** the visitor sees a clear error message and can retry submission
 
 ---
 
@@ -92,7 +98,9 @@ A visitor wants to learn more about the Maken platform's features, benefits, and
 - **FR-003**: Landing page MUST display a list of all active/published organizations with their names and logos
 - **FR-004**: System MUST allow visitors to click on an organization to navigate to that organization's tenant-specific subdomain
 - **FR-005**: Landing page MUST provide a "Contact Us" or "Create Your Brand" call-to-action button
-- **FR-006**: System MUST provide a contact form or contact method for organizations interested in creating their own brand
+- **FR-006**: System MUST store contact form submissions in the database for admin review via dashboard
+- **FR-006a**: Contact form MUST capture contact name, email, organization name, and message content
+- **FR-006b**: System MUST provide an admin dashboard interface for viewing and managing contact inquiries
 - **FR-007**: Landing page MUST include sections describing platform features and benefits
 - **FR-008**: Landing page MUST be responsive and work on desktop, tablet, and mobile devices
 - **FR-009**: System MUST handle the case when no organizations exist by displaying an appropriate message
@@ -103,7 +111,7 @@ A visitor wants to learn more about the Maken platform's features, benefits, and
 ### Key Entities *(include if feature involves data)*
 
 - **Organization/Tenant**: Represents a branded learning platform instance with name, subdomain, logo, active status, and branding colors
-- **Contact Inquiry**: Represents a message from a potential organization with contact name, email, organization name, and message content
+- **Contact Inquiry**: Represents a message from a potential organization with contact name, email, organization name, message content, submission timestamp, and status (new/reviewed/contacted)
 - **Landing Page Content**: Represents configurable content sections including hero text, features list, benefits, and how-it-works steps
 
 ## Success Criteria *(mandatory)*
@@ -112,7 +120,7 @@ A visitor wants to learn more about the Maken platform's features, benefits, and
 
 - **SC-001**: Visitors can access the landing page and view available organizations within 2 seconds on standard broadband connections
 - **SC-002**: 95% of visitors successfully navigate from the landing page to a tenant-specific area on their first attempt
-- **SC-003**: Contact form submissions are successfully delivered to the admin team with 99% reliability
+- **SC-003**: Contact form submissions are successfully stored in the database with 99% reliability and accessible via admin dashboard
 - **SC-004**: Landing page is fully functional and visually correct on devices with screen widths from 320px (mobile) to 2560px (desktop)
 - **SC-005**: Zero "tenant not resolved" errors occur when visitors access the root domain
 - **SC-006**: Visitors can understand the platform's purpose and value within 10 seconds of landing on the page (measured through user testing or analytics showing engagement with key sections)
