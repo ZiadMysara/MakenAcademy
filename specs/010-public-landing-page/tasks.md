@@ -152,8 +152,8 @@
 - [x] T069 [US3] Implement contact-inquiry-list component with table/list view, status filter, and pagination
 - [x] T070 [US3] Implement contact-inquiry-detail component with status update and notes
 - [x] T071 [US3] Add route for contact inquiries in control-panel routes: `/admin/contact-inquiries`
-- [ ] T072 [US3] Add navigation link to contact inquiries in control panel sidebar
-- [ ] T073 [US3] Add PlatformAdmin role guard to contact inquiry routes
+- [x] T072 [US3] Add navigation link to contact inquiries in control panel sidebar
+- [x] T073 [US3] Add PlatformAdmin role guard to contact inquiry routes
 
 **Checkpoint**: All contact form functionality complete - public form submission and admin dashboard management
 
@@ -182,8 +182,8 @@
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] T080 [P] Add database indexes on ContactInquiry (Status, SubmittedAt, IsDeleted) in migration
-- [ ] T081 [P] Add composite index on ContactInquiry (IsDeleted, Status, SubmittedAt) for admin queries
+- [x] T080 [P] Add database indexes on ContactInquiry (Status, SubmittedAt, IsDeleted) in migration
+- [x] T081 [P] Add composite index on ContactInquiry (IsDeleted, Status, SubmittedAt) for admin queries
 - [ ] T082 [P] Implement rate limiting middleware for contact form endpoint (5 requests per hour per IP)
 - [ ] T083 [P] Add input sanitization for ContactInquiry fields (HTML encoding)
 - [ ] T084 [P] Optimize organization logos (WebP format, lazy loading)
