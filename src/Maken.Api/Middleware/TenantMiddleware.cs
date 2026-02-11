@@ -51,9 +51,20 @@ public class TenantMiddleware
 
         var host = context.Request.Host.Host;
 
-        // Allow localhost and IP addresses (development)
+        // Allow localhost and IP addresses (development/testing)
+        // For localhost, try to extract tenant ID from JWT claims
         if (IsLocalhost(host))
         {
+            // Try to get tenant ID from JWT claims (for testing/development)
+            if (context.User?.Identity?.IsAuthenticated == true)
+            {
+                var tenantIdClaim = context.User.FindFirst("TenantId")?.Value;
+                if (!string.IsNullOrEmpty(tenantIdClaim) && Guid.TryParse(tenantIdClaim, out var tenantId))
+                {
+                    context.Items["TenantId"] = tenantId;
+                }
+            }
+            
             await _next(context);
             return;
         }
@@ -78,10 +89,10 @@ public class TenantMiddleware
         }
 
         // Resolve tenant ID from subdomain
-        var tenantId = await tenantResolver.ResolveAsync(subdomain, context.RequestAborted);
+        var tenantIdFromSubdomain = await tenantResolver.ResolveAsync(subdomain, context.RequestAborted);
 
         // If tenant not found, return 404
-        if (tenantId == null)
+        if (tenantIdFromSubdomain == null)
         {
             context.Response.StatusCode = 404;
             await context.Response.WriteAsync("Tenant not found");
@@ -89,7 +100,7 @@ public class TenantMiddleware
         }
 
         // Set tenant context in HttpContext.Items for downstream use
-        context.Items["TenantId"] = tenantId.Value;
+        context.Items["TenantId"] = tenantIdFromSubdomain.Value;
         context.Items["Subdomain"] = subdomain;
 
         // Continue to next middleware

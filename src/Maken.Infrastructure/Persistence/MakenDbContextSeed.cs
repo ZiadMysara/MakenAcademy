@@ -1,97 +1,72 @@
+using Maken.Application.Common.Interfaces;
 using Maken.Domain.Entities;
 using Maken.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 
 namespace Maken.Infrastructure.Persistence;
 
 /// <summary>
-/// Provides seed data for the Maken database.
+/// Seeds initial data for development and testing.
 /// </summary>
 public static class MakenDbContextSeed
 {
     /// <summary>
-    /// Seeds the database with initial demo data.
+    /// Seeds the database with initial tenant and admin user.
     /// </summary>
-    /// <param name="context">The database context.</param>
-    /// <param name="logger">The logger instance.</param>
-    public static async Task SeedAsync(MakenDbContext context, ILogger logger)
+    public static async Task SeedAsync(MakenDbContext context, IPasswordHasher passwordHasher)
     {
-        try
+        // Check if data already exists (use IgnoreQueryFilters to bypass tenant filter)
+        if (await context.Tenants.IgnoreQueryFilters().AnyAsync())
         {
-            // Ensure database is created
-            await context.Database.EnsureCreatedAsync();
-
-            // Check if data already exists
-            if (await context.Tenants.AnyAsync())
-            {
-                logger.LogInformation("Database already contains data. Skipping seed.");
-                return;
-            }
-
-            logger.LogInformation("Seeding database with demo data...");
-
-            // Create demo tenant
-            var demoTenant = new Tenant("Demo Academy", "demo");
-            context.Tenants.Add(demoTenant);
-
-            // Create PlatformAdmin user (no tenant)
-            var platformAdmin = new User(
-                email: "admin@maken.app",
-                passwordHash: "$2a$11$placeholder", // Placeholder - actual auth via Supabase
-                firstName: "Platform",
-                lastName: "Administrator",
-                role: RoleType.PlatformAdmin,
-                tenantId: null
-            );
-            context.Users.Add(platformAdmin);
-
-            // Create CompanyAdmin for demo tenant
-            var companyAdmin = new User(
-                email: "admin@demo.maken.app",
-                passwordHash: "$2a$11$placeholder",
-                firstName: "Demo",
-                lastName: "Admin",
-                role: RoleType.CompanyAdmin,
-                tenantId: demoTenant.Id
-            );
-            context.Users.Add(companyAdmin);
-
-            // Create Instructor for demo tenant
-            var instructor = new User(
-                email: "instructor@demo.maken.app",
-                passwordHash: "$2a$11$placeholder",
-                firstName: "Demo",
-                lastName: "Instructor",
-                role: RoleType.Instructor,
-                tenantId: demoTenant.Id
-            );
-            context.Users.Add(instructor);
-
-            // Create Student for demo tenant
-            var student = new User(
-                email: "student@demo.maken.app",
-                passwordHash: "$2a$11$placeholder",
-                firstName: "Demo",
-                lastName: "Student",
-                role: RoleType.Student,
-                tenantId: demoTenant.Id
-            );
-            context.Users.Add(student);
-
-            await context.SaveChangesAsync();
-
-            logger.LogInformation("Database seeded successfully with demo data.");
-            logger.LogInformation("Demo Tenant: {Subdomain} (ID: {TenantId})", demoTenant.Subdomain, demoTenant.Id);
-            logger.LogInformation("PlatformAdmin: {Email} ({FullName})", platformAdmin.Email, platformAdmin.FullName);
-            logger.LogInformation("CompanyAdmin: {Email} ({FullName})", companyAdmin.Email, companyAdmin.FullName);
-            logger.LogInformation("Instructor: {Email} ({FullName})", instructor.Email, instructor.FullName);
-            logger.LogInformation("Student: {Email} ({FullName})", student.Email, student.FullName);
+            return; // Database already seeded
         }
-        catch (Exception ex)
-        {
-            logger.LogError(ex, "An error occurred while seeding the database.");
-            throw;
-        }
+
+        // Create default tenant
+        var tenant = new Tenant("Demo Academy", "demo");
+        tenant.SetBranding(
+            logoUrl: "https://via.placeholder.com/150",
+            primaryColor: "#1E40AF",
+            secondaryColor: "#64748B"
+        );
+        context.Tenants.Add(tenant);
+        await context.SaveChangesAsync();
+
+        // Create admin user
+        var passwordHash = passwordHasher.HashPassword("Admin123!");
+        var admin = new User(
+            email: "admin@example.com",
+            passwordHash: passwordHash,
+            firstName: "Admin",
+            lastName: "User",
+            role: RoleType.CompanyAdmin,
+            tenantId: tenant.Id
+        );
+        context.Users.Add(admin);
+
+        // Create instructor user
+        var instructorPasswordHash = passwordHasher.HashPassword("Instructor123!");
+        var instructor = new User(
+            email: "instructor@example.com",
+            passwordHash: instructorPasswordHash,
+            firstName: "John",
+            lastName: "Instructor",
+            role: RoleType.Instructor,
+            tenantId: tenant.Id
+        );
+        context.Users.Add(instructor);
+
+        // Create student user
+        var studentPasswordHash = passwordHasher.HashPassword("Student123!");
+        var student = new User(
+            email: "student@example.com",
+            passwordHash: studentPasswordHash,
+            firstName: "Jane",
+            lastName: "Student",
+            role: RoleType.Student,
+            tenantId: tenant.Id
+        );
+        context.Users.Add(student);
+
+        await context.SaveChangesAsync();
     }
 }

@@ -61,21 +61,27 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 // Phase 5: Authentication & Authorization (User Story 3)
-// Configure JWT Bearer authentication (Supabase Auth integration)
+// Configure JWT Bearer authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
-        // Supabase JWT configuration
-        options.Authority = builder.Configuration["Supabase:Authority"];
-        options.Audience = builder.Configuration["Supabase:Audience"];
+        var secretKey = builder.Configuration["Jwt:SecretKey"] 
+            ?? throw new InvalidOperationException("JWT SecretKey is not configured.");
+        var issuer = builder.Configuration["Jwt:Issuer"] ?? "Maken";
+        var audience = builder.Configuration["Jwt:Audience"] ?? "Maken";
+        
         options.RequireHttpsMetadata = !builder.Environment.IsDevelopment();
         
         options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
         {
             ValidateIssuer = true,
+            ValidIssuer = issuer,
             ValidateAudience = true,
+            ValidAudience = audience,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(
+                System.Text.Encoding.UTF8.GetBytes(secretKey)),
             ClockSkew = TimeSpan.Zero
         };
     });
@@ -113,6 +119,24 @@ builder.Services.AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();
 
+// Seed database in development
+if (app.Environment.IsDevelopment())
+{
+    using var scope = app.Services.CreateScope();
+    var services = scope.ServiceProvider;
+    try
+    {
+        var context = services.GetRequiredService<Maken.Infrastructure.Persistence.MakenDbContext>();
+        var passwordHasher = services.GetRequiredService<Maken.Application.Common.Interfaces.IPasswordHasher>();
+        await Maken.Infrastructure.Persistence.MakenDbContextSeed.SeedAsync(context, passwordHasher);
+    }
+    catch (Exception ex)
+    {
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "An error occurred while seeding the database.");
+    }
+}
+
 // Configure the HTTP request pipeline
 if (app.Environment.IsDevelopment())
 {
@@ -122,16 +146,20 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+// Add correlation ID to all requests/responses
+app.UseMiddleware<CorrelationIdMiddleware>();
+
 // Phase 7: Global exception handling
 app.UseMiddleware<ExceptionMiddleware>();
 
-// Phase 4: Tenant resolution middleware (User Story 2)
-// Must be before UseAuthentication to ensure tenant context is available
-app.UseMiddleware<TenantMiddleware>();
-
 // Phase 5: Authentication & Authorization (User Story 3)
+// Must be before TenantMiddleware so JWT claims are available
 app.UseAuthentication();
 app.UseAuthorization();
+
+// Phase 4: Tenant resolution middleware (User Story 2)
+// Runs after authentication to access JWT claims for tenant ID
+app.UseMiddleware<TenantMiddleware>();
 
 app.MapControllers();
 

@@ -18,6 +18,15 @@ public abstract class TenantScopedEntity : BaseEntity, ITenantScoped
     public Guid TenantId { get; private set; }
 
     /// <summary>
+    /// Parameterless constructor for EF Core.
+    /// DO NOT USE - This is only for EF Core materialization.
+    /// </summary>
+    protected TenantScopedEntity() : base()
+    {
+        // EF Core will set TenantId via reflection after construction
+    }
+
+    /// <summary>
     /// Initializes a new tenant-scoped entity.
     /// </summary>
     /// <param name="tenantId">The ID of the tenant that owns this entity.</param>

@@ -27,6 +27,15 @@ public class MakenDbContext : DbContext
     // DbSets
     public DbSet<Tenant> Tenants => Set<Tenant>();
     public DbSet<User> Users => Set<User>();
+    public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
+    public DbSet<Course> Courses => Set<Course>();
+    public DbSet<Lesson> Lessons => Set<Lesson>();
+    public DbSet<Exam> Exams => Set<Exam>();
+    public DbSet<Question> Questions => Set<Question>();
+    public DbSet<Choice> Choices => Set<Choice>();
+    public DbSet<Progress> Progresses => Set<Progress>();
+    public DbSet<Enrollment> Enrollments => Set<Enrollment>();
+    public DbSet<ContactInquiry> ContactInquiries => Set<ContactInquiry>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -47,58 +56,50 @@ public class MakenDbContext : DbContext
     /// </summary>
     private void ApplyGlobalFilters(ModelBuilder modelBuilder)
     {
-        // Get all entity types that implement ITenantScoped
-        foreach (var entityType in modelBuilder.Model.GetEntityTypes())
-        {
-            var clrType = entityType.ClrType;
+        // Get the current tenant ID - this will be evaluated at query execution time
+        // Note: We access _tenantContext.TenantId directly in the lambda, which EF Core
+        // will evaluate each time a query is executed, not when the DbContext is created
+        
+        // Apply filters to specific entity types
+        // Course: BaseEntity + ITenantScoped
+        modelBuilder.Entity<Course>().HasQueryFilter(c => 
+            !c.IsDeleted && (_tenantContext.TenantId == null || c.TenantId == _tenantContext.TenantId));
 
-            // Apply soft delete filter to all entities inheriting from BaseEntity
-            if (typeof(BaseEntity).IsAssignableFrom(clrType))
-            {
-                var method = typeof(MakenDbContext)
-                    .GetMethod(nameof(ApplySoftDeleteFilter), System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static)
-                    ?.MakeGenericMethod(clrType);
+        // Lesson: BaseEntity with TenantId property (but doesn't implement ITenantScoped)
+        // Apply both soft delete and tenant filter
+        modelBuilder.Entity<Lesson>().HasQueryFilter(l => 
+            !l.IsDeleted && (_tenantContext.TenantId == null || l.TenantId == _tenantContext.TenantId));
 
-                method?.Invoke(null, new object[] { modelBuilder });
-            }
+        // Exam: BaseEntity + ITenantScoped
+        modelBuilder.Entity<Exam>().HasQueryFilter(e => 
+            !e.IsDeleted && (_tenantContext.TenantId == null || e.TenantId == _tenantContext.TenantId));
 
-            // Apply tenant filter to all entities implementing ITenantScoped
-            if (typeof(ITenantScoped).IsAssignableFrom(clrType))
-            {
-                var method = typeof(MakenDbContext)
-                    .GetMethod(nameof(ApplyTenantFilter), System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static)
-                    ?.MakeGenericMethod(clrType);
+        // Question: BaseEntity only (no tenant scoping - inherits from Exam)
+        modelBuilder.Entity<Question>().HasQueryFilter(q => !q.IsDeleted);
 
-                method?.Invoke(null, new object[] { modelBuilder, _tenantContext });
-            }
-        }
+        // Choice: BaseEntity only (no tenant scoping - inherits from Question)
+        modelBuilder.Entity<Choice>().HasQueryFilter(c => !c.IsDeleted);
 
-        // Special case: User entity has nullable TenantId (for PlatformAdmin)
-        // Apply custom filter that handles null tenant context AND soft delete
+        // Progress: BaseEntity + ITenantScoped
+        modelBuilder.Entity<Progress>().HasQueryFilter(p => 
+            !p.IsDeleted && (_tenantContext.TenantId == null || p.TenantId == _tenantContext.TenantId));
+
+        // Enrollment: BaseEntity + ITenantScoped
+        modelBuilder.Entity<Enrollment>().HasQueryFilter(e => 
+            !e.IsDeleted && (_tenantContext.TenantId == null || e.TenantId == _tenantContext.TenantId));
+
+        // RefreshToken: BaseEntity only
+        modelBuilder.Entity<RefreshToken>().HasQueryFilter(rt => !rt.IsDeleted);
+
+        // Tenant: BaseEntity only (no tenant scoping for Tenant entity itself)
+        modelBuilder.Entity<Tenant>().HasQueryFilter(t => !t.IsDeleted);
+
+        // User: Special case - nullable TenantId for PlatformAdmin
         modelBuilder.Entity<User>().HasQueryFilter(u =>
             !u.IsDeleted && (_tenantContext.TenantId == null || u.TenantId == _tenantContext.TenantId));
-    }
 
-    /// <summary>
-    /// Applies soft delete filter to an entity type.
-    /// Filter: WHERE IsDeleted = false
-    /// </summary>
-    private static void ApplySoftDeleteFilter<TEntity>(ModelBuilder modelBuilder)
-        where TEntity : BaseEntity
-    {
-        modelBuilder.Entity<TEntity>().HasQueryFilter(e => !e.IsDeleted);
-    }
-
-    /// <summary>
-    /// Applies tenant scoping filter to an entity type.
-    /// Filter: WHERE TenantId = @currentTenantId
-    /// </summary>
-    private static void ApplyTenantFilter<TEntity>(ModelBuilder modelBuilder, ITenantContext tenantContext)
-        where TEntity : class, ITenantScoped
-    {
-        // IMPORTANT: The filter expression must capture the tenantContext variable
-        // so it evaluates at query time, not at model creation time
-        modelBuilder.Entity<TEntity>().HasQueryFilter(e => e.TenantId == tenantContext.TenantId);
+        // ContactInquiry: BaseEntity only (no tenant scoping - public inquiries from landing page)
+        modelBuilder.Entity<ContactInquiry>().HasQueryFilter(ci => !ci.IsDeleted);
     }
 
     /// <summary>

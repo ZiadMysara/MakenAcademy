@@ -54,9 +54,26 @@ public static class DependencyInjection
             }
         });
 
-        // TODO: Register repositories and services in future tasks
-        // services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-        // services.AddScoped<IUnitOfWork, UnitOfWork>();
+        // Register Unit of Work
+        services.AddScoped<IUnitOfWork, Persistence.UnitOfWork>();
+
+        // Register generic repository
+        services.AddScoped(typeof(IRepository<>), typeof(Persistence.Repositories.Repository<>));
+
+        // Register authentication services
+        services.AddScoped<IJwtTokenService, JwtTokenService>();
+        services.AddScoped<IPasswordHasher, PasswordHasher>();
+        services.AddScoped<IRefreshTokenRepository, Persistence.Repositories.RefreshTokenRepository>();
+
+        // Register repositories
+        services.AddScoped<Application.Common.Interfaces.ICourseRepository, Persistence.Repositories.CourseRepository>();
+        services.AddScoped<Application.Common.Interfaces.IEnrollmentRepository, Persistence.Repositories.EnrollmentRepository>();
+        services.AddScoped<Application.Common.Interfaces.IProgressRepository, Persistence.Repositories.ProgressRepository>();
+        services.AddScoped<Application.Common.Interfaces.IExamRepository, Persistence.Repositories.ExamRepository>();
+
+        // Register domain services
+        services.AddScoped<Domain.Services.ProgressionService>();
+        services.AddScoped<Domain.Services.ExamGradingService>();
 
         return services;
     }
