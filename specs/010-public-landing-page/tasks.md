@@ -24,9 +24,9 @@
 
 **Purpose**: Project initialization and basic structure
 
-- [ ] T001 Verify .NET 8.0 SDK and Angular CLI 21 are installed
-- [ ] T002 Create feature branch `010-public-landing-page` from main
-- [ ] T003 [P] Review constitution compliance from plan.md (already passed)
+- [x] T001 Verify .NET 8.0 SDK and Angular CLI 21 are installed
+- [x] T002 Create feature branch `010-public-landing-page` from main
+- [x] T003 [P] Review constitution compliance from plan.md (already passed)
 
 ---
 
@@ -36,18 +36,18 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T004 Create ContactInquiry entity in `src/Maken.Domain/Entities/ContactInquiry.cs` with all fields (Id, ContactName, Email, OrganizationName, Message, Status, SubmittedAt, ReviewedAt, ReviewedBy, Notes, IsDeleted, DeletedAt)
-- [ ] T005 Create ContactInquiryStatus enum in `src/Maken.Domain/Entities/ContactInquiry.cs` (New=0, Reviewed=1, Contacted=2)
-- [ ] T006 [P] Create ContactInquiry EF Core configuration in `src/Maken.Infrastructure/Persistence/Configurations/ContactInquiryConfiguration.cs`
-- [ ] T007 Add ContactInquiry DbSet to ApplicationDbContext in `src/Maken.Infrastructure/Persistence/ApplicationDbContext.cs`
-- [ ] T008 Create and apply database migration for ContactInquiry entity using `dotnet ef migrations add AddContactInquiryEntity`
-- [ ] T009 [P] Create PublicOrganizationDto in `src/Maken.Application/DTOs/PublicOrganizationDto.cs`
-- [ ] T010 [P] Create ContactInquiryDto in `src/Maken.Application/DTOs/ContactInquiryDto.cs`
-- [ ] T011 [P] Create CreateContactInquiryRequest in `src/Maken.Api/DTOs/Requests/CreateContactInquiryRequest.cs`
-- [ ] T012 [P] Create UpdateContactInquiryStatusRequest in `src/Maken.Api/DTOs/Requests/UpdateContactInquiryStatusRequest.cs`
-- [ ] T013 [P] Create PublicOrganizationResponse in `src/Maken.Api/DTOs/Responses/PublicOrganizationResponse.cs`
-- [ ] T014 [P] Create ContactInquiryResponse in `src/Maken.Api/DTOs/Responses/ContactInquiryResponse.cs`
-- [ ] T015 [P] Create ContactInquiryListResponse in `src/Maken.Api/DTOs/Responses/ContactInquiryListResponse.cs`
+- [x] T004 Create ContactInquiry entity in `src/Maken.Domain/Entities/ContactInquiry.cs` with all fields (Id, ContactName, Email, OrganizationName, Message, Status, SubmittedAt, ReviewedAt, ReviewedBy, Notes, IsDeleted, DeletedAt)
+- [x] T005 Create ContactInquiryStatus enum in `src/Maken.Domain/Entities/ContactInquiry.cs` (New=0, Reviewed=1, Contacted=2)
+- [x] T006 [P] Create ContactInquiry EF Core configuration in `src/Maken.Infrastructure/Persistence/Configurations/ContactInquiryConfiguration.cs`
+- [x] T007 Add ContactInquiry DbSet to ApplicationDbContext in `src/Maken.Infrastructure/Persistence/ApplicationDbContext.cs`
+- [x] T008 Create and apply database migration for ContactInquiry entity using `dotnet ef migrations add AddContactInquiryEntity`
+- [x] T009 [P] Create PublicOrganizationDto in `src/Maken.Application/DTOs/PublicOrganizationDto.cs`
+- [x] T010 [P] Create ContactInquiryDto in `src/Maken.Application/DTOs/ContactInquiryDto.cs`
+- [x] T011 [P] Create CreateContactInquiryRequest in `src/Maken.Api/DTOs/Requests/CreateContactInquiryRequest.cs`
+- [x] T012 [P] Create UpdateContactInquiryStatusRequest in `src/Maken.Api/DTOs/Requests/UpdateContactInquiryStatusRequest.cs`
+- [x] T013 [P] Create PublicOrganizationResponse in `src/Maken.Api/DTOs/Responses/PublicOrganizationResponse.cs`
+- [x] T014 [P] Create ContactInquiryResponse in `src/Maken.Api/DTOs/Responses/ContactInquiryResponse.cs`
+- [x] T015 [P] Create ContactInquiryListResponse in `src/Maken.Api/DTOs/Responses/ContactInquiryListResponse.cs`
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -61,32 +61,32 @@
 
 ### Backend Implementation for User Story 1
 
-- [ ] T016 [P] [US1] Create GetPublicOrganizationsQuery in `src/Maken.Application/Queries/Organizations/GetPublicOrganizationsQuery.cs`
-- [ ] T017 [US1] Create GetPublicOrganizationsQueryHandler in `src/Maken.Application/Queries/Organizations/GetPublicOrganizationsQueryHandler.cs` (filters IsActive=true, IsDeleted=false, maps to PublicOrganizationDto)
-- [ ] T018 [US1] Create PublicController in `src/Maken.Api/Controllers/PublicController.cs` with [AllowAnonymous] attribute
-- [ ] T019 [US1] Implement GET /api/public/organizations endpoint in PublicController with 5-minute response caching
-- [ ] T020 [US1] Add AutoMapper profile for Tenant → PublicOrganizationDto mapping in `src/Maken.Application/Mappings/OrganizationMappingProfile.cs`
+- [x] T016 [P] [US1] Create GetPublicOrganizationsQuery in `src/Maken.Application/Queries/Organizations/GetPublicOrganizationsQuery.cs`
+- [x] T017 [US1] Create GetPublicOrganizationsQueryHandler in `src/Maken.Application/Queries/Organizations/GetPublicOrganizationsQueryHandler.cs` (filters IsActive=true, IsDeleted=false, maps to PublicOrganizationDto)
+- [x] T018 [US1] Create PublicController in `src/Maken.Api/Controllers/PublicController.cs` with [AllowAnonymous] attribute
+- [x] T019 [US1] Implement GET /api/public/organizations endpoint in PublicController with 5-minute response caching
+- [x] T020 [US1] Add AutoMapper profile for Tenant → PublicOrganizationDto mapping in `src/Maken.Application/Mappings/OrganizationMappingProfile.cs`
 
 ### Frontend Implementation for User Story 1
 
-- [ ] T021 [P] [US1] Create public module structure: `frontend/src/app/public/`
-- [ ] T022 [P] [US1] Generate landing-page component in `frontend/src/app/public/landing-page/`
-- [ ] T023 [P] [US1] Generate hero-section component in `frontend/src/app/public/components/hero-section/`
-- [ ] T024 [P] [US1] Generate organization-showcase component in `frontend/src/app/public/components/organization-showcase/`
-- [ ] T025 [P] [US1] Generate features-section component in `frontend/src/app/public/components/features-section/`
-- [ ] T026 [P] [US1] Generate how-it-works-section component in `frontend/src/app/public/components/how-it-works-section/`
-- [ ] T027 [P] [US1] Create PublicApiService in `frontend/src/app/public/services/public-api.service.ts`
-- [ ] T028 [US1] Implement getOrganizations() method in PublicApiService
-- [ ] T029 [US1] Update app.routes.ts to add root route (`/`) loading LandingPageComponent
-- [ ] T030 [US1] Update tenant.guard.ts to bypass tenant resolution for root (`/`) and `/public` routes
-- [ ] T031 [US1] Implement hero-section component with platform branding, tagline, and value proposition
-- [ ] T032 [US1] Implement organization-showcase component to display organizations from API
-- [ ] T033 [US1] Add "No organizations available" message in organization-showcase when list is empty
-- [ ] T034 [US1] Implement features-section component with hardcoded platform features (courses, exams, progress tracking, analytics)
-- [ ] T035 [US1] Implement how-it-works-section component with 3-4 step workflow
-- [ ] T036 [US1] Implement landing-page component to compose all sub-components
-- [ ] T037 [US1] Add mobile-first responsive CSS for all landing page components (320px-2560px breakpoints)
-- [ ] T038 [US1] Add skeleton loaders for organization showcase progressive rendering
+- [x] T021 [P] [US1] Create public module structure: `frontend/src/app/public/`
+- [x] T022 [P] [US1] Generate landing-page component in `frontend/src/app/public/landing-page/`
+- [x] T023 [P] [US1] Generate hero-section component in `frontend/src/app/public/components/hero-section/`
+- [x] T024 [P] [US1] Generate organization-showcase component in `frontend/src/app/public/components/organization-showcase/`
+- [x] T025 [P] [US1] Generate features-section component in `frontend/src/app/public/components/features-section/`
+- [x] T026 [P] [US1] Generate how-it-works-section component in `frontend/src/app/public/components/how-it-works-section/`
+- [x] T027 [P] [US1] Create PublicApiService in `frontend/src/app/public/services/public-api.service.ts`
+- [x] T028 [US1] Implement getOrganizations() method in PublicApiService
+- [x] T029 [US1] Update app.routes.ts to add root route (`/`) loading LandingPageComponent
+- [x] T030 [US1] Update tenant.guard.ts to bypass tenant resolution for root (`/`) and `/public` routes
+- [x] T031 [US1] Implement hero-section component with platform branding, tagline, and value proposition
+- [x] T032 [US1] Implement organization-showcase component to display organizations from API
+- [x] T033 [US1] Add "No organizations available" message in organization-showcase when list is empty
+- [x] T034 [US1] Implement features-section component with hardcoded platform features (courses, exams, progress tracking, analytics)
+- [x] T035 [US1] Implement how-it-works-section component with 3-4 step workflow
+- [x] T036 [US1] Implement landing-page component to compose all sub-components
+- [x] T037 [US1] Add mobile-first responsive CSS for all landing page components (320px-2560px breakpoints)
+- [x] T038 [US1] Add skeleton loaders for organization showcase progressive rendering
 
 **Checkpoint**: At this point, User Story 1 should be fully functional - landing page loads without errors and displays organizations
 

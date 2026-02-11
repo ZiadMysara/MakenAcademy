@@ -1,0 +1,16 @@
+.landing-page {
+  min-height: 100vh;
+  background-color: white;
+}
+
+/* Ensure smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Mobile-first responsive design */
+@media (max-width: 768px) {
+  .landing-page {
+    font-size: 14px;
+  }
+}

@@ -1,0 +1,44 @@
+<div class="organization-showcase">
+  <div class="showcase-container">
+    <h2 class="showcase-title">Available Organizations</h2>
+    <p class="showcase-subtitle">Select an organization to access their learning platform</p>
+
+    <!-- Loading State -->
+    <div *ngIf="loading" class="loading-state">
+      <div class="skeleton-grid">
+        <div class="skeleton-card" *ngFor="let i of [1,2,3]"></div>
+      </div>
+    </div>
+
+    <!-- Error State -->
+    <div *ngIf="error && !loading" class="error-state">
+      <p class="error-message">{{ error }}</p>
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="!loading && !error && organizations.length === 0" class="empty-state">
+      <p class="empty-message">No organizations available at this time.</p>
+    </div>
+
+    <!-- Organizations Grid -->
+    <div *ngIf="!loading && !error && organizations.length > 0" class="organizations-grid">
+      <div *ngFor="let org of organizations" class="organization-card">
+        <div class="card-header" [style.background-color]="org.primaryColor || '#667eea'">
+          <img 
+            *ngIf="org.logoUrl" 
+            [src]="org.logoUrl" 
+            [alt]="org.name + ' logo'"
+            class="org-logo"
+          />
+          <div *ngIf="!org.logoUrl" class="org-logo-placeholder">
+            {{ org.name.charAt(0) }}
+          </div>
+        </div>
+        <div class="card-body">
+          <h3 class="org-name">{{ org.name }}</h3>
+          <p class="org-subdomain">{{ org.subdomain }}.maken.app</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
