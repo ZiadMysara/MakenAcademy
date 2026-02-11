@@ -3,6 +3,7 @@ import { HeroSection } from '../components/hero-section/hero-section';
 import { OrganizationShowcase } from '../components/organization-showcase/organization-showcase';
 import { FeaturesSection } from '../components/features-section/features-section';
 import { HowItWorksSection } from '../components/how-it-works-section/how-it-works-section';
+import { ContactForm } from '../components/contact-form/contact-form';
 
 @Component({
   selector: 'app-landing-page',
@@ -10,7 +11,8 @@ import { HowItWorksSection } from '../components/how-it-works-section/how-it-wor
     HeroSection,
     OrganizationShowcase,
     FeaturesSection,
-    HowItWorksSection
+    HowItWorksSection,
+    ContactForm
   ],
   templateUrl: './landing-page.html',
   styleUrl: './landing-page.css',

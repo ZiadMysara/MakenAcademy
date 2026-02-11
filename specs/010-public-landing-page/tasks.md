@@ -118,29 +118,29 @@
 
 ### Backend Implementation for User Story 3
 
-- [ ] T044 [P] [US3] Create CreateContactInquiryCommand in `src/Maken.Application/Commands/ContactInquiries/CreateContactInquiryCommand.cs`
-- [ ] T045 [P] [US3] Create CreateContactInquiryCommandValidator in `src/Maken.Application/Commands/ContactInquiries/CreateContactInquiryCommandValidator.cs` (FluentValidation rules)
-- [ ] T046 [US3] Create CreateContactInquiryCommandHandler in `src/Maken.Application/Commands/ContactInquiries/CreateContactInquiryCommandHandler.cs`
-- [ ] T047 [P] [US3] Create GetContactInquiriesQuery in `src/Maken.Application/Queries/ContactInquiries/GetContactInquiriesQuery.cs` with pagination and status filter
-- [ ] T048 [US3] Create GetContactInquiriesQueryHandler in `src/Maken.Application/Queries/ContactInquiries/GetContactInquiriesQueryHandler.cs`
-- [ ] T049 [P] [US3] Create UpdateContactInquiryStatusCommand in `src/Maken.Application/Commands/ContactInquiries/UpdateContactInquiryStatusCommand.cs`
-- [ ] T050 [US3] Create UpdateContactInquiryStatusCommandHandler in `src/Maken.Application/Commands/ContactInquiries/UpdateContactInquiryStatusCommandHandler.cs`
-- [ ] T051 [US3] Create ContactInquiriesController in `src/Maken.Api/Controllers/ContactInquiriesController.cs`
-- [ ] T052 [US3] Implement POST /api/contact-inquiries endpoint with [AllowAnonymous] and rate limiting (5 requests per hour)
-- [ ] T053 [US3] Implement GET /api/contact-inquiries endpoint with [Authorize(Roles = "PlatformAdmin")] and pagination
-- [ ] T054 [US3] Implement PATCH /api/contact-inquiries/{id}/status endpoint with [Authorize(Roles = "PlatformAdmin")]
-- [ ] T055 [US3] Add AutoMapper profile for ContactInquiry → ContactInquiryDto mapping in `src/Maken.Application/Mappings/ContactInquiryMappingProfile.cs`
+- [x] T044 [P] [US3] Create CreateContactInquiryCommand in `src/Maken.Application/Commands/ContactInquiries/CreateContactInquiryCommand.cs`
+- [x] T045 [P] [US3] Create CreateContactInquiryCommandValidator in `src/Maken.Application/Commands/ContactInquiries/CreateContactInquiryCommandValidator.cs` (FluentValidation rules)
+- [x] T046 [US3] Create CreateContactInquiryCommandHandler in `src/Maken.Application/Commands/ContactInquiries/CreateContactInquiryCommandHandler.cs`
+- [x] T047 [P] [US3] Create GetContactInquiriesQuery in `src/Maken.Application/Queries/ContactInquiries/GetContactInquiriesQuery.cs` with pagination and status filter
+- [x] T048 [US3] Create GetContactInquiriesQueryHandler in `src/Maken.Application/Queries/ContactInquiries/GetContactInquiriesQueryHandler.cs`
+- [x] T049 [P] [US3] Create UpdateContactInquiryStatusCommand in `src/Maken.Application/Commands/ContactInquiries/UpdateContactInquiryStatusCommand.cs`
+- [x] T050 [US3] Create UpdateContactInquiryStatusCommandHandler in `src/Maken.Application/Commands/ContactInquiries/UpdateContactInquiryStatusCommandHandler.cs`
+- [x] T051 [US3] Create ContactInquiriesController in `src/Maken.Api/Controllers/ContactInquiriesController.cs`
+- [x] T052 [US3] Implement POST /api/contact-inquiries endpoint with [AllowAnonymous] and rate limiting (5 requests per hour)
+- [x] T053 [US3] Implement GET /api/contact-inquiries endpoint with [Authorize(Roles = "PlatformAdmin")] and pagination
+- [x] T054 [US3] Implement PATCH /api/contact-inquiries/{id}/status endpoint with [Authorize(Roles = "PlatformAdmin")]
+- [x] T055 [US3] Add AutoMapper profile for ContactInquiry → ContactInquiryDto mapping in `src/Maken.Application/Mappings/ContactInquiryMappingProfile.cs`
 
 ### Frontend Implementation for User Story 3 (Public Form)
 
-- [ ] T056 [P] [US3] Generate contact-form component in `frontend/src/app/public/components/contact-form/`
-- [ ] T057 [US3] Implement contact form with fields: contactName, email, organizationName, message
-- [ ] T058 [US3] Add form validation (required fields, email format, min/max lengths)
-- [ ] T059 [US3] Implement submitContactInquiry() method in PublicApiService
-- [ ] T060 [US3] Add form submission handler with success/error messages
-- [ ] T061 [US3] Add loading state during form submission
-- [ ] T062 [US3] Add rate limit error handling (429 response)
-- [ ] T063 [US3] Add mobile-responsive styling for contact form
+- [x] T056 [P] [US3] Generate contact-form component in `frontend/src/app/public/components/contact-form/`
+- [x] T057 [US3] Implement contact form with fields: contactName, email, organizationName, message
+- [x] T058 [US3] Add form validation (required fields, email format, min/max lengths)
+- [x] T059 [US3] Implement submitContactInquiry() method in PublicApiService
+- [x] T060 [US3] Add form submission handler with success/error messages
+- [x] T061 [US3] Add loading state during form submission
+- [x] T062 [US3] Add rate limit error handling (429 response)
+- [x] T063 [US3] Add mobile-responsive styling for contact form
 
 ### Frontend Implementation for User Story 3 (Admin Dashboard)
 

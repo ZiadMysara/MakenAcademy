@@ -1,0 +1,98 @@
+<div class="contact-form-container">
+  <h2 class="form-title">Contact Us</h2>
+  <p class="form-description">Interested in bringing Maken to your organization? Fill out the form below and we'll get in touch with you soon.</p>
+
+  <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="contact-form">
+    <!-- Contact Name -->
+    <div class="form-group">
+      <label for="contactName" class="form-label">Your Name <span class="required">*</span></label>
+      <input
+        type="text"
+        id="contactName"
+        formControlName="contactName"
+        class="form-input"
+        [class.error]="f['contactName'].invalid && f['contactName'].touched"
+        placeholder="Enter your full name"
+      />
+      <div class="error-message" *ngIf="f['contactName'].invalid && f['contactName'].touched">
+        <span *ngIf="f['contactName'].errors?.['required']">Name is required</span>
+        <span *ngIf="f['contactName'].errors?.['minlength']">Name must be at least 2 characters</span>
+        <span *ngIf="f['contactName'].errors?.['maxlength']">Name cannot exceed 100 characters</span>
+      </div>
+    </div>
+
+    <!-- Email -->
+    <div class="form-group">
+      <label for="email" class="form-label">Email Address <span class="required">*</span></label>
+      <input
+        type="email"
+        id="email"
+        formControlName="email"
+        class="form-input"
+        [class.error]="f['email'].invalid && f['email'].touched"
+        placeholder="your.email@example.com"
+      />
+      <div class="error-message" *ngIf="f['email'].invalid && f['email'].touched">
+        <span *ngIf="f['email'].errors?.['required']">Email is required</span>
+        <span *ngIf="f['email'].errors?.['email']">Please enter a valid email address</span>
+        <span *ngIf="f['email'].errors?.['maxlength']">Email cannot exceed 255 characters</span>
+      </div>
+    </div>
+
+    <!-- Organization Name -->
+    <div class="form-group">
+      <label for="organizationName" class="form-label">Organization Name <span class="required">*</span></label>
+      <input
+        type="text"
+        id="organizationName"
+        formControlName="organizationName"
+        class="form-input"
+        [class.error]="f['organizationName'].invalid && f['organizationName'].touched"
+        placeholder="Enter your organization name"
+      />
+      <div class="error-message" *ngIf="f['organizationName'].invalid && f['organizationName'].touched">
+        <span *ngIf="f['organizationName'].errors?.['required']">Organization name is required</span>
+        <span *ngIf="f['organizationName'].errors?.['minlength']">Organization name must be at least 2 characters</span>
+        <span *ngIf="f['organizationName'].errors?.['maxlength']">Organization name cannot exceed 200 characters</span>
+      </div>
+    </div>
+
+    <!-- Message -->
+    <div class="form-group">
+      <label for="message" class="form-label">Message <span class="required">*</span></label>
+      <textarea
+        id="message"
+        formControlName="message"
+        class="form-textarea"
+        [class.error]="f['message'].invalid && f['message'].touched"
+        placeholder="Tell us about your organization and how you'd like to use Maken..."
+        rows="6"
+      ></textarea>
+      <div class="error-message" *ngIf="f['message'].invalid && f['message'].touched">
+        <span *ngIf="f['message'].errors?.['required']">Message is required</span>
+        <span *ngIf="f['message'].errors?.['minlength']">Message must be at least 10 characters</span>
+        <span *ngIf="f['message'].errors?.['maxlength']">Message cannot exceed 2000 characters</span>
+      </div>
+    </div>
+
+    <!-- Success Message -->
+    <div class="success-message" *ngIf="submitSuccess">
+      <p>✓ Thank you for your inquiry! We'll be in touch soon.</p>
+    </div>
+
+    <!-- Error Message -->
+    <div class="error-banner" *ngIf="submitError">
+      <p>{{ submitError }}</p>
+    </div>
+
+    <!-- Submit Button -->
+    <button
+      type="submit"
+      class="submit-button"
+      [disabled]="isSubmitting"
+    >
+      <span *ngIf="!isSubmitting">Send Message</span>
+      <span *ngIf="isSubmitting">Sending...</span>
+    </button>
+  </form>
+</div>

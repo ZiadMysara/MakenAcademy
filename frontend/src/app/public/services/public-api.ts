@@ -12,6 +12,18 @@ export interface PublicOrganization {
   secondaryColor: string | null;
 }
 
+export interface ContactInquiryRequest {
+  contactName: string;
+  email: string;
+  organizationName: string;
+  message: string;
+}
+
+export interface ContactInquiryResponse {
+  id: string;
+  message: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -21,5 +33,9 @@ export class PublicApi {
 
   getOrganizations(): Observable<PublicOrganization[]> {
     return this.http.get<PublicOrganization[]>(`${this.apiUrl}/public/organizations`);
+  }
+
+  submitContactInquiry(request: ContactInquiryRequest): Observable<ContactInquiryResponse> {
+    return this.http.post<ContactInquiryResponse>(`${this.apiUrl}/contact-inquiries`, request);
   }
 }
