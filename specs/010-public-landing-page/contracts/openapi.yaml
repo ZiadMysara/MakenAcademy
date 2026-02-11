@@ -1,0 +1,446 @@
+openapi: 3.0.3
+info:
+  title: Maken Public Landing Page API
+  description: API endpoints for the public landing page and contact inquiry management
+  version: 1.0.0
+  contact:
+    name: Maken Platform
+    email: contact@maken.app
+
+servers:
+  - url: http://localhost:5292/api
+    description: Local development server
+  - url: https://maken.app/api
+    description: Production server
+
+tags:
+  - name: Public
+    description: Public endpoints (no authentication required)
+  - name: Contact Inquiries
+    description: Contact inquiry management (admin only)
+
+paths:
+  /public/organizations:
+    get:
+      tags:
+        - Public
+      summary: Get list of active organizations
+      description: Returns a list of all active organizations for display on the landing page. No authentication required.
+      operationId: getPublicOrganizations
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PublicOrganizationResponse'
+              example:
+                - id: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+                  name: "Al-Azhar Academy"
+                  subdomain: "alazhar"
+                  logoUrl: "https://storage.maken.app/logos/alazhar.png"
+                  primaryColor: "#1E40AF"
+                  secondaryColor: "#64748B"
+                - id: "7fb95f64-5717-4562-b3fc-2c963f66afa7"
+                  name: "Islamic University"
+                  subdomain: "islamicuni"
+                  logoUrl: "https://storage.maken.app/logos/islamicuni.png"
+                  primaryColor: "#059669"
+                  secondaryColor: "#6B7280"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /contact-inquiries:
+    post:
+      tags:
+        - Public
+      summary: Submit a contact inquiry
+      description: Creates a new contact inquiry from the landing page contact form. No authentication required.
+      operationId: createContactInquiry
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateContactInquiryRequest'
+            example:
+              contactName: "Ahmed Hassan"
+              email: "ahmed@example.com"
+              organizationName: "New Islamic Institute"
+              message: "We are interested in creating our own branded learning platform for our institute."
+      responses:
+        '201':
+          description: Contact inquiry created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactInquiryResponse'
+              example:
+                id: "9fa85f64-5717-4562-b3fc-2c963f66afa8"
+                contactName: "Ahmed Hassan"
+                email: "ahmed@example.com"
+                organizationName: "New Islamic Institute"
+                message: "We are interested in creating our own branded learning platform for our institute."
+                status: "New"
+                submittedAt: "2025-02-11T10:30:00Z"
+        '400':
+          description: Invalid request data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+        '429':
+          description: Too many requests (rate limit exceeded)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    get:
+      tags:
+        - Contact Inquiries
+      summary: Get list of contact inquiries (Admin only)
+      description: Returns a paginated list of contact inquiries. Requires PlatformAdmin role.
+      operationId: getContactInquiries
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: status
+          in: query
+          description: Filter by inquiry status
+          required: false
+          schema:
+            type: string
+            enum: [New, Reviewed, Contacted]
+        - name: pageNumber
+          in: query
+          description: Page number (1-based)
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: pageSize
+          in: query
+          description: Number of items per page
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactInquiryListResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden (requires PlatformAdmin role)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /contact-inquiries/{id}/status:
+    patch:
+      tags:
+        - Contact Inquiries
+      summary: Update contact inquiry status (Admin only)
+      description: Updates the status of a contact inquiry. Requires PlatformAdmin role.
+      operationId: updateContactInquiryStatus
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: Contact inquiry ID
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateContactInquiryStatusRequest'
+            example:
+              status: "Reviewed"
+              notes: "Contacted via email, waiting for response"
+      responses:
+        '200':
+          description: Status updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactInquiryResponse'
+        '400':
+          description: Invalid request data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden (requires PlatformAdmin role)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Contact inquiry not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    PublicOrganizationResponse:
+      type: object
+      required:
+        - id
+        - name
+        - subdomain
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Organization unique identifier
+        name:
+          type: string
+          description: Organization display name
+          example: "Al-Azhar Academy"
+        subdomain:
+          type: string
+          description: Subdomain for tenant access
+          example: "alazhar"
+        logoUrl:
+          type: string
+          format: uri
+          nullable: true
+          description: URL to organization logo
+          example: "https://storage.maken.app/logos/alazhar.png"
+        primaryColor:
+          type: string
+          pattern: '^#[0-9A-Fa-f]{6}$'
+          nullable: true
+          description: Primary branding color (hex code)
+          example: "#1E40AF"
+        secondaryColor:
+          type: string
+          pattern: '^#[0-9A-Fa-f]{6}$'
+          nullable: true
+          description: Secondary branding color (hex code)
+          example: "#64748B"
+
+    CreateContactInquiryRequest:
+      type: object
+      required:
+        - contactName
+        - email
+        - organizationName
+        - message
+      properties:
+        contactName:
+          type: string
+          minLength: 1
+          maxLength: 100
+          description: Name of person contacting
+          example: "Ahmed Hassan"
+        email:
+          type: string
+          format: email
+          maxLength: 255
+          description: Contact email address
+          example: "ahmed@example.com"
+        organizationName:
+          type: string
+          minLength: 1
+          maxLength: 200
+          description: Name of organization inquiring
+          example: "New Islamic Institute"
+        message:
+          type: string
+          minLength: 10
+          maxLength: 2000
+          description: Inquiry message content
+          example: "We are interested in creating our own branded learning platform."
+
+    ContactInquiryResponse:
+      type: object
+      required:
+        - id
+        - contactName
+        - email
+        - organizationName
+        - message
+        - status
+        - submittedAt
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Inquiry unique identifier
+        contactName:
+          type: string
+          description: Name of person contacting
+        email:
+          type: string
+          format: email
+          description: Contact email address
+        organizationName:
+          type: string
+          description: Name of organization inquiring
+        message:
+          type: string
+          description: Inquiry message content
+        status:
+          type: string
+          enum: [New, Reviewed, Contacted]
+          description: Current inquiry status
+        submittedAt:
+          type: string
+          format: date-time
+          description: Timestamp of submission
+        reviewedAt:
+          type: string
+          format: date-time
+          nullable: true
+          description: Timestamp when reviewed by admin
+        reviewedBy:
+          type: string
+          format: uuid
+          nullable: true
+          description: Admin who reviewed the inquiry
+        notes:
+          type: string
+          nullable: true
+          description: Admin notes
+          maxLength: 1000
+
+    ContactInquiryListResponse:
+      type: object
+      required:
+        - items
+        - totalCount
+        - pageNumber
+        - pageSize
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContactInquiryResponse'
+        totalCount:
+          type: integer
+          description: Total number of inquiries matching filter
+        pageNumber:
+          type: integer
+          description: Current page number (1-based)
+        pageSize:
+          type: integer
+          description: Number of items per page
+        totalPages:
+          type: integer
+          description: Total number of pages
+
+    UpdateContactInquiryStatusRequest:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          enum: [New, Reviewed, Contacted]
+          description: New status for the inquiry
+        notes:
+          type: string
+          nullable: true
+          maxLength: 1000
+          description: Admin notes
+
+    ErrorResponse:
+      type: object
+      required:
+        - error
+        - message
+      properties:
+        error:
+          type: string
+          description: Error code or type
+        message:
+          type: string
+          description: Human-readable error message
+        details:
+          type: string
+          nullable: true
+          description: Additional error details
+
+    ValidationErrorResponse:
+      type: object
+      required:
+        - error
+        - message
+        - errors
+      properties:
+        error:
+          type: string
+          description: Error code
+          example: "ValidationError"
+        message:
+          type: string
+          description: Human-readable error message
+          example: "One or more validation errors occurred"
+        errors:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Field-specific validation errors
+          example:
+            email: ["Email address is invalid"]
+            message: ["Message must be at least 10 characters"]
