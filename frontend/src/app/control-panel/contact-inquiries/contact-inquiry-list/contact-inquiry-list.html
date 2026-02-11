@@ -1,0 +1,78 @@
+<div class="contact-inquiry-list-container">
+  <div class="header">
+    <h1>Contact Inquiries</h1>
+    
+    <div class="filters">
+      <label for="statusFilter">Filter by Status:</label>
+      <select id="statusFilter" [(ngModel)]="selectedStatus" (change)="onStatusFilterChange(selectedStatus)" class="status-filter">
+        <option value="">All</option>
+        <option value="New">New</option>
+        <option value="Reviewed">Reviewed</option>
+        <option value="Contacted">Contacted</option>
+      </select>
+    </div>
+  </div>
+
+  <div *ngIf="isLoading" class="loading">Loading inquiries...</div>
+
+  <div *ngIf="error" class="error">{{ error }}</div>
+
+  <div *ngIf="!isLoading && !error && inquiries.length === 0" class="empty">
+    No contact inquiries found.
+  </div>
+
+  <div *ngIf="!isLoading && !error && inquiries.length > 0" class="table-container">
+    <table class="inquiries-table">
+      <thead>
+        <tr>
+          <th>Submitted</th>
+          <th>Contact Name</th>
+          <th>Organization</th>
+          <th>Email</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let inquiry of inquiries" (click)="viewInquiry(inquiry.id)" class="inquiry-row">
+          <td>{{ inquiry.submittedAt | date:'short' }}</td>
+          <td>{{ inquiry.contactName }}</td>
+          <td>{{ inquiry.organizationName }}</td>
+          <td>{{ inquiry.email }}</td>
+          <td>
+            <span class="status-badge" [ngClass]="getStatusClass(inquiry.status)">
+              {{ inquiry.status }}
+            </span>
+          </td>
+          <td>
+            <button (click)="viewInquiry(inquiry.id); $event.stopPropagation()" class="view-button">
+              View
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="pagination" *ngIf="totalPages > 1">
+      <button 
+        (click)="onPageChange(currentPage - 1)" 
+        [disabled]="currentPage === 1"
+        class="page-button"
+      >
+        Previous
+      </button>
+      
+      <span class="page-info">
+        Page {{ currentPage }} of {{ totalPages }} ({{ totalCount }} total)
+      </span>
+      
+      <button 
+        (click)="onPageChange(currentPage + 1)" 
+        [disabled]="currentPage === totalPages"
+        class="page-button"
+      >
+        Next
+      </button>
+    </div>
+  </div>
+</div>

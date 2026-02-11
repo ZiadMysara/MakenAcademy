@@ -1,0 +1,77 @@
+<div class="contact-inquiry-detail-container">
+  <div class="header">
+    <button (click)="goBack()" class="back-button">← Back to List</button>
+    <h1>Contact Inquiry Details</h1>
+  </div>
+
+  <div *ngIf="isLoading" class="loading">Loading inquiry...</div>
+
+  <div *ngIf="error" class="error">{{ error }}</div>
+
+  <div *ngIf="!isLoading && inquiry" class="detail-card">
+    <div class="detail-section">
+      <h2>Contact Information</h2>
+      <div class="detail-row">
+        <span class="label">Name:</span>
+        <span class="value">{{ inquiry.contactName }}</span>
+      </div>
+      <div class="detail-row">
+        <span class="label">Email:</span>
+        <span class="value">{{ inquiry.email }}</span>
+      </div>
+      <div class="detail-row">
+        <span class="label">Organization:</span>
+        <span class="value">{{ inquiry.organizationName }}</span>
+      </div>
+      <div class="detail-row">
+        <span class="label">Submitted:</span>
+        <span class="value">{{ inquiry.submittedAt | date:'full' }}</span>
+      </div>
+    </div>
+
+    <div class="detail-section">
+      <h2>Message</h2>
+      <p class="message">{{ inquiry.message }}</p>
+    </div>
+
+    <div class="detail-section">
+      <h2>Status & Notes</h2>
+      <div class="form-group">
+        <label for="status">Status:</label>
+        <select id="status" [(ngModel)]="selectedStatus" class="form-select">
+          <option value="New">New</option>
+          <option value="Reviewed">Reviewed</option>
+          <option value="Contacted">Contacted</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="notes">Admin Notes:</label>
+        <textarea 
+          id="notes" 
+          [(ngModel)]="notes" 
+          class="form-textarea"
+          rows="4"
+          placeholder="Add notes about this inquiry..."
+        ></textarea>
+      </div>
+
+      <div *ngIf="updateSuccess" class="success-message">
+        Status updated successfully! Redirecting...
+      </div>
+
+      <div *ngIf="updateError" class="error-message">
+        {{ updateError }}
+      </div>
+
+      <button 
+        (click)="updateStatus()" 
+        [disabled]="isUpdating"
+        class="update-button"
+      >
+        <span *ngIf="!isUpdating">Update Status</span>
+        <span *ngIf="isUpdating">Updating...</span>
+      </button>
+    </div>
+  </div>
+</div>

@@ -144,14 +144,14 @@
 
 ### Frontend Implementation for User Story 3 (Admin Dashboard)
 
-- [ ] T064 [P] [US3] Generate contact-inquiry-list component in `frontend/src/app/control-panel/contact-inquiries/`
-- [ ] T065 [P] [US3] Generate contact-inquiry-detail component in `frontend/src/app/control-panel/contact-inquiries/`
-- [ ] T066 [P] [US3] Create ContactInquiryService in `frontend/src/app/control-panel/contact-inquiries/services/contact-inquiry.service.ts`
-- [ ] T067 [US3] Implement getContactInquiries() method in ContactInquiryService with pagination and filtering
-- [ ] T068 [US3] Implement updateInquiryStatus() method in ContactInquiryService
-- [ ] T069 [US3] Implement contact-inquiry-list component with table/list view, status filter, and pagination
-- [ ] T070 [US3] Implement contact-inquiry-detail component with status update and notes
-- [ ] T071 [US3] Add route for contact inquiries in control-panel routes: `/admin/contact-inquiries`
+- [x] T064 [P] [US3] Generate contact-inquiry-list component in `frontend/src/app/control-panel/contact-inquiries/`
+- [x] T065 [P] [US3] Generate contact-inquiry-detail component in `frontend/src/app/control-panel/contact-inquiries/`
+- [x] T066 [P] [US3] Create ContactInquiryService in `frontend/src/app/control-panel/contact-inquiries/services/contact-inquiry.service.ts`
+- [x] T067 [US3] Implement getContactInquiries() method in ContactInquiryService with pagination and filtering
+- [x] T068 [US3] Implement updateInquiryStatus() method in ContactInquiryService
+- [x] T069 [US3] Implement contact-inquiry-list component with table/list view, status filter, and pagination
+- [x] T070 [US3] Implement contact-inquiry-detail component with status update and notes
+- [x] T071 [US3] Add route for contact inquiries in control-panel routes: `/admin/contact-inquiries`
 - [ ] T072 [US3] Add navigation link to contact inquiries in control panel sidebar
 - [ ] T073 [US3] Add PlatformAdmin role guard to contact inquiry routes
 

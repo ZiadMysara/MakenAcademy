@@ -36,6 +36,19 @@ export const controlPanelRoutes: Routes = [
       {
         path: 'analytics',
         loadChildren: () => import('./analytics/analytics.routes').then(m => m.analyticsRoutes)
+      },
+      {
+        path: 'contact-inquiries',
+        children: [
+          {
+            path: '',
+            loadComponent: () => import('./contact-inquiries/contact-inquiry-list/contact-inquiry-list').then(m => m.ContactInquiryList)
+          },
+          {
+            path: ':id',
+            loadComponent: () => import('./contact-inquiries/contact-inquiry-detail/contact-inquiry-detail').then(m => m.ContactInquiryDetail)
+          }
+        ]
       }
     ]
   }
