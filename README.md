@@ -16,6 +16,8 @@ Maken is a product-first, methodology-driven learning management system designed
 
 - ✅ **Multi-tenant Architecture**: Complete data isolation per institute
 - ✅ **Subdomain-based Tenant Resolution**: Each institute gets their own subdomain (e.g., `academy.maken.app`)
+- ✅ **Public Landing Page**: Anonymous access to platform information and organization showcase
+- ✅ **Contact Form**: Organizations can submit inquiries to join the platform
 - ✅ **Course Management**: Full CRUD operations for courses with draft/published status
 - ✅ **Lesson Management**: Create and organize lessons with video/PDF content
 - ✅ **Exam System**: MCQ exams with automatic grading and unlimited retries
@@ -275,6 +277,22 @@ View tenant-scoped analytics:
 - Exam pass rate
 - All metrics isolated per tenant
 
+### Public Landing Page
+Anonymous access to platform information:
+- Platform branding and value proposition
+- Organization showcase (active organizations only)
+- Platform features overview
+- How it works section
+- Contact form for new organization inquiries
+- Mobile-first responsive design (320px-2560px)
+
+### Contact Inquiry Management
+Admin dashboard for managing contact inquiries:
+- View all contact inquiries with pagination
+- Filter by status (New, Reviewed, Contacted)
+- Update inquiry status and add notes
+- PlatformAdmin role required
+
 ### Authentication & Authorization
 Secure access control:
 - JWT-based authentication
@@ -318,6 +336,113 @@ Returns system health status including database connectivity.
   ]
 }
 ```
+
+---
+
+### Public Landing Page
+
+#### `GET /`
+Public landing page accessible without authentication.
+
+**Authorization**: None (public endpoint)
+
+**Features**:
+- Platform branding and hero section
+- Organization showcase (active organizations only)
+- Platform features overview
+- How it works section
+- Contact form for new organization inquiries
+
+#### `GET /api/public/organizations`
+Gets a list of active organizations for the landing page.
+
+**Authorization**: None (public endpoint)
+
+**Response**:
+```json
+[
+  {
+    "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "name": "Demo Academy",
+    "subdomain": "demo",
+    "logoUrl": null,
+    "primaryColor": null,
+    "secondaryColor": null
+  }
+]
+```
+
+#### `POST /api/contact-inquiries`
+Submits a contact inquiry from the public landing page.
+
+**Authorization**: None (public endpoint)
+
+**Request Body**:
+```json
+{
+  "contactName": "John Doe",
+  "email": "john@example.com",
+  "organizationName": "Example Institute",
+  "message": "We are interested in using Maken for our institute..."
+}
+```
+
+**Response**:
+```json
+{
+  "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "message": "Your inquiry has been submitted successfully. We will contact you soon."
+}
+```
+
+#### `GET /api/contact-inquiries`
+Gets all contact inquiries with pagination (admin only).
+
+**Authorization**: Required (PlatformAdmin only)
+
+**Query Parameters**:
+- `pageNumber` (optional, default: 1): Page number
+- `pageSize` (optional, default: 20): Items per page
+- `status` (optional): Filter by status (New, Reviewed, Contacted)
+
+**Response**:
+```json
+{
+  "items": [
+    {
+      "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "contactName": "John Doe",
+      "email": "john@example.com",
+      "organizationName": "Example Institute",
+      "message": "We are interested in using Maken...",
+      "status": "New",
+      "submittedAt": "2026-02-11T20:00:00Z",
+      "reviewedAt": null,
+      "reviewedBy": null,
+      "notes": null
+    }
+  ],
+  "totalCount": 1,
+  "pageNumber": 1,
+  "pageSize": 20,
+  "totalPages": 1
+}
+```
+
+#### `PATCH /api/contact-inquiries/{id}/status`
+Updates the status of a contact inquiry (admin only).
+
+**Authorization**: Required (PlatformAdmin only)
+
+**Request Body**:
+```json
+{
+  "status": "Reviewed",
+  "notes": "Contacted via email on 2026-02-12"
+}
+```
+
+**Response**: 204 No Content
 
 ---
 

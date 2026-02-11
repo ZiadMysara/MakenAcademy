@@ -189,7 +189,7 @@
 - [ ] T084 [P] Optimize organization logos (WebP format, lazy loading)
 - [ ] T085 [P] Add error logging for contact form submissions
 - [ ] T086 [P] Add analytics tracking for landing page visits (if analytics service exists)
-- [ ] T087 [P] Update README.md with landing page feature documentation
+- [x] T087 [P] Update README.md with landing page feature documentation
 - [ ] T088 [P] Add API documentation comments to PublicController and ContactInquiriesController
 - [ ] T089 Verify all endpoints match contracts/openapi.yaml specification
 - [ ] T090 Run manual testing checklist from quickstart.md
