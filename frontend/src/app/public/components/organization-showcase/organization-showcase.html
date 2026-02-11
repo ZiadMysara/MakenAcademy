@@ -22,7 +22,15 @@
 
     <!-- Organizations Grid -->
     <div *ngIf="!loading && !error && organizations.length > 0" class="organizations-grid">
-      <div *ngFor="let org of organizations" class="organization-card">
+      <div 
+        *ngFor="let org of organizations" 
+        class="organization-card"
+        (click)="onOrganizationClick(org)"
+        role="button"
+        tabindex="0"
+        (keydown.enter)="onOrganizationClick(org)"
+        (keydown.space)="onOrganizationClick(org)"
+        [attr.aria-label]="'Access ' + org.name + ' learning platform'">
         <div class="card-header" [style.background-color]="org.primaryColor || '#667eea'">
           <img 
             *ngIf="org.logoUrl" 

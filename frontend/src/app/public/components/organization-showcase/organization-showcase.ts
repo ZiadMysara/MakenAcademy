@@ -35,4 +35,25 @@ export class OrganizationShowcase implements OnInit {
       }
     });
   }
+
+  onOrganizationClick(organization: PublicOrganization): void {
+    // Navigate to tenant subdomain
+    const protocol = window.location.protocol;
+    const hostname = window.location.hostname;
+    const port = window.location.port;
+    
+    // For local development, use subdomain.localhost:port
+    // For production, use subdomain.maken.app
+    let targetUrl: string;
+    
+    if (hostname === 'localhost' || hostname === '127.0.0.1') {
+      // Local development: subdomain.localhost:port
+      targetUrl = `${protocol}//${organization.subdomain}.${hostname}${port ? ':' + port : ''}`;
+    } else {
+      // Production: subdomain.maken.app
+      targetUrl = `${protocol}//${organization.subdomain}.maken.app`;
+    }
+    
+    window.location.href = targetUrl;
+  }
 }

@@ -100,11 +100,11 @@
 
 ### Implementation for User Story 2
 
-- [ ] T039 [US2] Add click handler to organization cards in organization-showcase component
-- [ ] T040 [US2] Implement navigation logic to redirect to tenant subdomain using window.location.href
-- [ ] T041 [US2] Add hover effects to organization cards for visual feedback
-- [ ] T042 [US2] Add touch interaction support for mobile devices
-- [ ] T043 [US2] Test redirection with multiple organizations to verify correct subdomain resolution
+- [x] T039 [US2] Add click handler to organization cards in organization-showcase component
+- [x] T040 [US2] Implement navigation logic to redirect to tenant subdomain using window.location.href
+- [x] T041 [US2] Add hover effects to organization cards for visual feedback
+- [x] T042 [US2] Add touch interaction support for mobile devices
+- [x] T043 [US2] Test redirection with multiple organizations to verify correct subdomain resolution
 
 **Checkpoint**: At this point, User Stories 1 AND 2 should both work - landing page displays organizations and clicking navigates to tenant areas
 
